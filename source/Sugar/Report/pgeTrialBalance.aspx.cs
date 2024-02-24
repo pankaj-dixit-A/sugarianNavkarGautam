@@ -591,5 +591,47 @@ public partial class Report_pgeTrialBalance : System.Web.UI.Page
         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "kids", "javascript:NJV('" + fromDT + "','" + toDT + "')", true);
     }
 
+    protected void btnDaywiseTrialBalance_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            string fromdt = "";
+            string toDate = "";
+            string whr1 = "";
+            if (txtFromDate.Text != string.Empty)
+            {
+                try
+                {
+                    fromdt = DateTime.Parse(txtFromDate.Text, System.Globalization.CultureInfo.CreateSpecificCulture("en-GB")).ToString("yyyy/MM/dd");
 
+                }
+                catch
+                {
+                    txtFromDate.Text = string.Empty;
+                    setFocusControl(txtFromDate);
+                    return;
+                }
+            }
+
+            if (txtToDt.Text != string.Empty)
+            {
+                try
+                {
+                    toDate = DateTime.Parse(txtToDt.Text, System.Globalization.CultureInfo.CreateSpecificCulture("en-GB")).ToString("yyyy/MM/dd");
+
+                }
+                catch
+                {
+                    txtToDt.Text = string.Empty;
+                    setFocusControl(txtToDt);
+                    return;
+                }
+            }
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "kys", "javascript:DayWiseTrBal('" + fromdt + "','" + toDate + "','" + whr1 + "')", true);
+
+        }
+        catch
+        {
+        }
+    }
 }
