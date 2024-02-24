@@ -21,7 +21,10 @@
 
             window.open('rptTrialBalance.aspx?Doc_Date=' + Doc_Date + '&Cwhere=' + Cwhere + '&FromDt=' + FromDt + '&ToDt=' + ToDt + '&GroupCode=' + GroupCode, '_blank');    //R=Redirected  O=Original
         }
+        function DayWiseTrBal(fromDt, ToDt, whr1) {
+            window.open('rptDaywiseTrBal.aspx?fromDt=' + fromDt + '&ToDt=' + ToDt + '&whr1=' + whr1, '_blank');    //R=Redirected  O=Original
 
+        }
 
         function op(ToDt, whr1) {
             window.open('rptOpeningBalance.aspx?ToDt=' + ToDt + '&whr1=' + whr1);    //R=Redirected  O=Original
@@ -164,6 +167,12 @@
                    <asp:Button Text="Manage Trade Debitors Group" runat="server" CssClass="btnHelp" ID="btnManageDebit" Height="24px"  Width="200px"
                         OnClick="btnManageDebit_Click" />
                 </td>
+                </tr>
+            <tr>
+                 <td colspan="2" align="left">
+                <asp:Button ID="btnDailyTrialbalance" runat="server" Text="Day Wise Trial Balance" CssClass="btnHelp"
+                        Width="150px" OnClick="btnDaywiseTrialBalance_Click" Height="24px" />
+            </td>
                 </tr>
         </table>
     </asp:Panel>
