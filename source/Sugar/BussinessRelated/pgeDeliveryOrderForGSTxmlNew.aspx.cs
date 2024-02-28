@@ -1684,7 +1684,26 @@ public partial class Sugar_pgeDeliveryOrderForGSTxmlNew : System.Web.UI.Page
     protected void btnEdit_Click(object sender, EventArgs e)
     {
 
+        string Dono = txtdoc_no.Text;
+        String LockedUser = string.Empty;
+        String LockRecord = string.Empty;
+        string DOQry = string.Empty;
+        LockRecord = clsCommon.getString("select LockRecord from nt_1_deliveryorder  where  company_code=" + Convert.ToInt32(Session["Company_Code"].ToString())
+               + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and doc_no=" + Dono);
+        if (LockRecord == "Y")
+        {
+            LockedUser = clsCommon.getString("select LockedUser from nt_1_deliveryorder  where  company_code=" + Convert.ToInt32(Session["Company_Code"].ToString())
+                + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and doc_no=" + Dono);
 
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "", "alert('This DO is Locked By " + LockedUser + "');", true);
+            return;
+        }
+        else
+        {
+            this.LockDo(Dono);
+        }
+       DOQry = this.getDisplayQuery();
+       this.fetchRecord(DOQry);
         if (lblMsg.Text != "Delete")
         {
             ViewState["mode"] = null;
@@ -1747,6 +1766,7 @@ public partial class Sugar_pgeDeliveryOrderForGSTxmlNew : System.Web.UI.Page
             {
                 txtGETPASS_CODE.Enabled = true;
             }
+
 
             //AmtCalculation();
         }
@@ -1817,8 +1837,9 @@ public partial class Sugar_pgeDeliveryOrderForGSTxmlNew : System.Web.UI.Page
 
         //hdnf.Value = clsCommon.getString("select max(doid) from nt_1_deliveryorder where Company_Code=" + Session["Company_Code"].ToString() + " and " +
         //        " Year_Code=" + Session["year"].ToString() + "");
-
-
+        string DoNo = txtdoc_no.Text;
+        string DoStatus = string.Empty; 
+        this.UnLockDo(DoNo);
         //clsButtonNavigation.enableDisable("S");
         //this.makeEmptyForm("S");
         //qry = getDisplayQuery();
@@ -3930,7 +3951,7 @@ public partial class Sugar_pgeDeliveryOrderForGSTxmlNew : System.Web.UI.Page
 
             }
 
-
+            this.UnLockDo(txtdoc_no.Text);
 
         }
         catch (Exception exxx)
@@ -11148,4 +11169,26 @@ public partial class Sugar_pgeDeliveryOrderForGSTxmlNew : System.Web.UI.Page
     //{
     //    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "showsms", "javascript:showsmspopuppar();", true);
     //}
+
+    private void LockDo(string Dono)
+    {
+
+        DataSet ds = new DataSet();
+        qry = " update nt_1_deliveryorder set LockRecord='Y' where  company_code=" + Convert.ToInt32(Session["Company_Code"].ToString())
+                  + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and doc_no=" + Dono;
+        ds = clsDAL.SimpleQuery(qry);
+
+        qry = " update nt_1_deliveryorder set LockedUser='" + user + "' where  company_code=" + Convert.ToInt32(Session["Company_Code"].ToString())
+                  + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and doc_no=" + Dono;
+        ds = clsDAL.SimpleQuery(qry);
+    }
+
+    private void UnLockDo(string Dono)
+    {
+
+        DataSet ds = new DataSet();
+        qry = " update nt_1_deliveryorder set LockRecord='N' where  company_code=" + Convert.ToInt32(Session["Company_Code"].ToString())
+                  + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and doc_no=" + Dono;
+        ds = clsDAL.SimpleQuery(qry);
+    }
 }
