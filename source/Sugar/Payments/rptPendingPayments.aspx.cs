@@ -17,8 +17,8 @@ using System.Web.UI.WebControls;
 public partial class Sugar_Payments_rptPendingPayments : System.Web.UI.Page
 {
 
-    string paymentUrl = "http://localhost:8085/api/payment/makepayment";
-    string statusUrl = "http://localhost:8085/api/payment/checkstatus";
+    string paymentUrl = "https://localhost:8085/api/payments/makepayment";
+    string statusUrl = "https://localhost:8085/api/payments/checkstatus";
     string Head_Fields = string.Empty;
     string Head_Values = string.Empty;
     string Head_Update = string.Empty;
