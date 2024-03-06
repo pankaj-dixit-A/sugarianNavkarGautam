@@ -966,8 +966,8 @@ public partial class Sugar_Report_pgeSaleBill_Print : System.Web.UI.Page
             for (int i = 0; i < table.Rows.Count; i++)
             {
                 Moblie_Number = table.Rows[i]["mobno"].ToString();
-                string Url = "https://wawatext.com/api/send.php?number=91" + Moblie_Number + "&type=text&message=" + message + "&instance_id=" + instanceid + "&access_token=" + accesstoken + "";
-                // string Url = "https://wawatext.com/api/send.php?number=91";
+                 string Url = "https://wawatext.com/api/send.php?number=91" + Moblie_Number + "&type=text&message=" + message + "&instance_id=" + instanceid + "&access_token=" + accesstoken + "";
+                 //string Url = "https://wawatext.com/api/send.php?number=91";
                 HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(Url);
                 HttpWebResponse resp = (HttpWebResponse)myReq.GetResponse();
                 StreamReader reder = new StreamReader(resp.GetResponseStream());

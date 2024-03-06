@@ -11,6 +11,7 @@ public class GithubWhatsAppHandler
     {
         try
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             DateTime currentDateAndTime = DateTime.Now;
             var requestData = new
             {
