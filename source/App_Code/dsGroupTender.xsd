@@ -15,7 +15,7 @@
                   <DbCommand CommandType="Text" ModifiedByUser="true">
                     <CommandText>SELECT        Tender_No, Company_Code, Tender_Date, Tender_dateConverted, Lifting_Date, Lifting_DateConverted, Mill_Code, mc, Grade, Quantal, Packing, Bags, Mill_Rate, MillDeff, Created_By, Modified_By, Year_Code, grouptenderid, 
                          Narration, Group_Account, gid, itemcode, millName, GroupName, membercode, mid, Buyer_Quantal, Sale_Rate, paid, paidDate, paid_dateConverted, trnderdetailid, ItemAmount, profit, indivisulProfit, millContribution, 
-                         paidorreseive, membername, ID, otherPaid
+                         paidorreseive, membername, ID, otherPaid, Prosess, isAccounted
 FROM            qryGroupTenderHeadDetail</CommandText>
                     <Parameters />
                   </DbCommand>
@@ -63,6 +63,8 @@ FROM            qryGroupTenderHeadDetail</CommandText>
               <Mapping SourceColumn="membername" DataSetColumn="membername" />
               <Mapping SourceColumn="ID" DataSetColumn="ID" />
               <Mapping SourceColumn="otherPaid" DataSetColumn="otherPaid" />
+              <Mapping SourceColumn="Prosess" DataSetColumn="Prosess" />
+              <Mapping SourceColumn="isAccounted" DataSetColumn="isAccounted" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -177,6 +179,20 @@ FROM            qryGroupTenderHeadDetail</CommandText>
               </xs:element>
               <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:int" minOccurs="0" />
               <xs:element name="otherPaid" msprop:Generator_ColumnVarNameInTable="columnotherPaid" msprop:Generator_ColumnPropNameInRow="otherPaid" msprop:Generator_ColumnPropNameInTable="otherPaidColumn" msprop:Generator_UserColumnName="otherPaid" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Prosess" msprop:Generator_ColumnVarNameInTable="columnProsess" msprop:Generator_ColumnPropNameInRow="Prosess" msprop:Generator_ColumnPropNameInTable="ProsessColumn" msprop:Generator_UserColumnName="Prosess" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="isAccounted" msprop:Generator_ColumnVarNameInTable="columnisAccounted" msprop:Generator_ColumnPropNameInRow="isAccounted" msprop:Generator_ColumnPropNameInTable="isAccountedColumn" msprop:Generator_UserColumnName="isAccounted" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>

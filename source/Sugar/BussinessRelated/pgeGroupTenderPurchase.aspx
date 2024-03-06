@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="pgeGroupTenderPurchase.aspx.cs" Inherits="Sugar_BussinessRelated_pgeGroupTenderPurchase" %>
+﻿<%@ Page Title="Group Tender Purchase" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="pgeGroupTenderPurchase.aspx.cs" Inherits="Sugar_BussinessRelated_pgeGroupTenderPurchase" %>
 
 
 <%@ MasterType VirtualPath="~/MasterPage.master" %>

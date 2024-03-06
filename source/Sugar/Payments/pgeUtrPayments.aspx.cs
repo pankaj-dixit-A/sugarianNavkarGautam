@@ -21,8 +21,8 @@ using System.IO;
 public partial class Sugar_Payments_pgeUtrPayments : System.Web.UI.Page
 {
 
-    string paymentUrl = "http://localhost:8085/api/payment/makepayment";
-    string statusUrl = "http://localhost:8085/api/payment/checkstatus";
+    string paymentUrl = "https://localhost:8085/api/payments/makepayment";
+    string statusUrl = "https://localhost:8085/api/payments/checkstatus";
     string Head_Fields = string.Empty;
     string Head_Values = string.Empty;
     string Head_Update = string.Empty;
@@ -137,6 +137,7 @@ public partial class Sugar_Payments_pgeUtrPayments : System.Web.UI.Page
 
     protected async void    btnMakePayment_Click(object sender, EventArgs e)
     {
+        System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
         //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "kyj", "javascript:toggleLoader()", true);
         Button btnMakePayment = (Button)sender;
         string[] args = btnMakePayment.CommandArgument.Split(';');

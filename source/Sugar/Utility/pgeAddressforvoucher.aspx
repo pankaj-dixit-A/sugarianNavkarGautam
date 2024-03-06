@@ -114,7 +114,17 @@
                     <asp:Label ID="lblPhonepayacname" runat="server" CssClass="lblName"></asp:Label>
                 </td>
             </tr>
+             <tr>
+                <td align="right" style="width: 30%;">
+                    <b>UnLock Do:</b>
+                </td>
+                <td align="left" style="width: 70%;">
+                    <asp:TextBox runat="server" ID="txtunLockDo" AutoPostBack="True" OnTextChanged="txtunLockDo_Click"  Width="50px" Height="24px"></asp:TextBox>
 
+                    <asp:Button ID="btnUnLockDo" runat="server" Text="UnLock Do" CssClass="btnHelp" Height="24px"
+                        Width="100px" OnClick="btnUnLockDo_Click" /> 
+                </td>
+            </tr>
 
 
 

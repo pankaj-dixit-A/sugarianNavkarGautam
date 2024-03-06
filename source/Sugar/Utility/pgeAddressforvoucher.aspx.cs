@@ -438,4 +438,19 @@ public partial class Sugar_pgeAddressforvoucher : System.Web.UI.Page
     {
     }
 
+    protected void btnUnLockDo_Click(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        qry = " update nt_1_deliveryorder set LockRecord='N' where  company_code=" + Convert.ToInt32(Session["Company_Code"].ToString())
+                  + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and doc_no=" + txtunLockDo.Text;
+        ds = clsDAL.SimpleQuery(qry);
+
+        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), " ", "alert('UnLock DO Successfully')", true);
+
+    }
+
+    protected void txtunLockDo_Click(object sender, EventArgs e)
+    {
+
+    }
 }

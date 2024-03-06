@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="pgeGroupTenderPurchaseUtility.aspx.cs" Inherits="Sugar_BussinessRelated_pgeGroupTenderPurchaseUtility" %>
+﻿<%@ Page Title="Group Tender Utility" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="pgeGroupTenderPurchaseUtility.aspx.cs" Inherits="Sugar_BussinessRelated_pgeGroupTenderPurchaseUtility" %>
 
 <%@ MasterType VirtualPath="~/MasterPage.master" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax1" %>
@@ -168,12 +168,13 @@
                     $("td", row).eq(2).html($(this).find("GroupName").text());
                     $("td", row).eq(3).html($(this).find("millShortName").text());
                     $("td", row).eq(4).html($(this).find("Quantal").text());
-                    $("td", row).eq(5).html($(this).find("Grade").text());   
-                    $("td", row).eq(6).html($(this).find("ourTenderNo").text());
-                    $("td", row).eq(7).html($(this).find("Buyer_Quantal").text());
-                    $("td", row).eq(8).html($(this).find("isAccounted").text());
-                    $("td", row).eq(9).html($(this).find("grouptenderid").text());
-                    $("td", row).eq(10).html($(this).find("IsDeleted").text());
+                    $("td", row).eq(5).html($(this).find("Mill_Rate").text());
+                    $("td", row).eq(6).html($(this).find("Grade").text());   
+                    $("td", row).eq(7).html($(this).find("ourTenderNo").text());
+                    $("td", row).eq(8).html($(this).find("Buyer_Quantal").text());
+                    $("td", row).eq(9).html($(this).find("isAccounted").text());
+                    $("td", row).eq(10).html($(this).find("grouptenderid").text());
+                    $("td", row).eq(11).html($(this).find("IsDeleted").text());
 
 
                     $("[id*=gvCustomers]").append(row);
@@ -244,7 +245,7 @@
                 }).get();
                 var row_index = $(this).index();
                 var Action = 1;
-                var Ac_Code = tableData[9];
+                var Ac_Code = tableData[10];
                 if (row_index > 0) {
                     if (isNaN(Ac_Code)) {
                     }
@@ -319,6 +320,7 @@
                         <asp:BoundField HeaderStyle-Width="50px" DataField="GroupName" HeaderText="Group Name " />
                         <asp:BoundField HeaderStyle-Width="50px" DataField="millShortName" HeaderText="Mill Short Name" />
                         <asp:BoundField HeaderStyle-Width="10px" DataField="Quantal" HeaderText="Quantal" />
+                        <asp:BoundField HeaderStyle-Width="10px" DataField="Mill_Rate" HeaderText="Mill_Rate" />
                         <asp:BoundField HeaderStyle-Width="10px" DataField="Grade" HeaderText="Grade" />  
                         <asp:BoundField HeaderStyle-Width="10px" DataField="ourTenderNo" HeaderText="Our TenderNo" />
                         <asp:BoundField HeaderStyle-Width="10px" DataField="Buyer_Quantal" HeaderText="Self Quantal" />

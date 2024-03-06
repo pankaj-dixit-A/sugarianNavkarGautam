@@ -321,8 +321,9 @@ public partial class pgeUtrentryxml : System.Web.UI.Page
                 drpSelectedBank.Enabled = false;
                 lblbank_Name.Text = string.Empty;
                 btntxtbank_ac.Enabled = true;
-                drpEntryType.Enabled = true; 
+                drpEntryType.Enabled = true;
                 drpPaymentType.Visible = false;
+                drpPaymentType.Enabled = true; 
                 txtmill_code.Enabled = true;
                 lblmill_name.Text = string.Empty;
                 btntxtmill_code.Enabled = true;

@@ -1,20 +1,20 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="pgePaindingReport.aspx.cs" Inherits="Sugar_Report_pgePaindingReport" %>
+﻿<%@ Page Title="Group Painding Reports" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="pgePaindingReport.aspx.cs" Inherits="Sugar_Report_pgePaindingReport" %>
 
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <script type="text/javascript">
         function pr(Ac_Code) {
-            window.open('rptGroupPaindingBanance.aspx?Ac_Code=' + Ac_Code);    //R=Redirected  O=Original
+            window.open('rptGroupPaindingBanance.aspx?Ac_Code=' + Ac_Code);     
         }
-        function GT(Ac_Code, FromDt, ToDt) {
-            window.open('rptGroupTenderGroupWice.aspx?Ac_Code=' + Ac_Code + '&FromDt=' + FromDt + '&ToDt=' + ToDt);    //R=Redirected  O=Original
+        function GT(Group_Code, FromDt, ToDt, Prosess, Accounted, GroupOrAccount, Ac_no) {
+            window.open('rptGroupTenderGroupWice.aspx?Group_Code=' + Group_Code + '&FromDt=' + FromDt + '&ToDt=' + ToDt + '&Prosess=' + Prosess + '&Accounted=' + Accounted + '&GroupOrAccount=' + GroupOrAccount + '&Ac_no=' + Ac_no);
         }
         function SG(Ac_Code, FromDt, ToDt) {
-            window.open('rptSelfBalanceGroupWice.aspx?Ac_Code=' + Ac_Code);    //R=Redirected  O=Original
+            window.open('rptSelfBalanceGroupWice.aspx?Ac_Code=' + Ac_Code);     
         }
         function MW() {
-            window.open('rptStockBookMillWice.aspx');    //R=Redirected  O=Original
+            window.open('rptStockBookMillWice.aspx');     
         }
     </script>
     <script type="text/javascript" language="javascript">
@@ -54,10 +54,14 @@
                 if (pageCount > 1) {
                     SelectedRowIndex = SelectedRowIndex + 1;
                 }
+                if (hdnfClosePopupValue == "txtGroupCode") {
+                    document.getElementById("<%= txtGroupCode.ClientID %>").value = grid.rows[SelectedRowIndex + 1].cells[0].innerText;
+                    document.getElementById("<%= lblGroupName.ClientID %>").innerText = grid.rows[SelectedRowIndex + 1].cells[1].innerText;
+                }
                 if (hdnfClosePopupValue == "txtAcCode") {
                     document.getElementById("<%= txtAcCode.ClientID %>").value = grid.rows[SelectedRowIndex + 1].cells[0].innerText;
-                    document.getElementById("<%= lblAcCodeName.ClientID %>").innerText = grid.rows[SelectedRowIndex + 1].cells[1].innerText;
-                }
+                         document.getElementById("<%= lblAcName.ClientID %>").innerText = grid.rows[SelectedRowIndex + 1].cells[1].innerText;
+                     }
 
                 document.getElementById("<%= hdnfClosePopup.ClientID %>").value = "Close";
             }
@@ -100,13 +104,33 @@ function SelectRow(CurrentRow, RowIndex) {
             }
             document.forms[0].appendChild(confirm_value);
         }
-
-        function Accountcode(e) {
+       
+        function Groupcode(e) {
             debugger;
             if (e.keyCode == 112) {
                 debugger;
                 e.preventDefault();
                 $("#<%=pnlPopup.ClientID %>").show();
+                $("#<%=btnGroupCode.ClientID %>").click();
+
+            }
+            if (e.keyCode == 9) {
+                e.preventDefault();
+                var unit = $("#<%=txtGroupCode.ClientID %>").val();
+
+                unit = "0" + unit;
+                $("#<%=txtGroupCode.ClientID %>").val(unit);
+                __doPostBack("txtGroupCode", "TextChanged");
+
+            }
+
+        }
+        function Accode(e) {
+                debugger;
+                if (e.keyCode == 112) {
+                    debugger;
+                    e.preventDefault();
+                    $("#<%=pnlPopup.ClientID %>").show();
                 $("#<%=btnAcCode.ClientID %>").click();
 
             }
@@ -136,9 +160,12 @@ function SelectRow(CurrentRow, RowIndex) {
                 debugger;
                 document.getElementById("<%=pnlPopup.ClientID %>").style.display = "none";
                 var hdnfClosePopupValue = document.getElementById("<%= hdnfClosePopup.ClientID %>").value;
+                if (hdnfClosePopupValue == "txtGroupCode") {
+                    document.getElementById("<%=txtGroupCode.ClientID %>").focus();
+                }
                 if (hdnfClosePopupValue == "txtAcCode") {
                     document.getElementById("<%=txtAcCode.ClientID %>").focus();
-                }
+                  }
                 document.getElementById("<%=txtSearchText.ClientID %>").value = "";
                 document.getElementById("<%= hdnfClosePopup.ClientID %>").value = "Close";
             }
@@ -158,23 +185,72 @@ function SelectRow(CurrentRow, RowIndex) {
     <asp:HiddenField ID="hdnfgid" runat="server" />
       <center>
         <table width="100%" align="left" cellspacing="5">
-        <tr> 
+            
+              <tr> 
+                <td align="right" style="width: 40%;">
+                    <asp:RadioButtonList ID="radioFilter" runat="server" RepeatDirection="Horizontal"
+                        CellPadding="6" CellSpacing="6" AutoPostBack="True" OnSelectedIndexChanged="radioFilter_SelectedIndexChanged">
+                        <asp:ListItem Text="Group Wice" Value="B" Selected="True"></asp:ListItem>
+                        <asp:ListItem Text="Account Wice" Value="A"></asp:ListItem>
+                    </asp:RadioButtonList>
+                </td>
+                  
+              </tr> 
+              <tr> 
               
                 <td align="right" style="width: 40%;">
-                    <b>Ac/Code</b>
+                    <b>Group Code:</b>
                 </td>
              <td align="left" colspan="5" style="width: 60%;">
-                <asp:TextBox ID="txtAcCode" runat="server" Width="80px" CssClass="txt" AutoPostBack="false"
-                    OnTextChanged="txtAcCode_TextChanged" Height="24px" onkeydown="Accountcode(event);"></asp:TextBox>
-                <asp:Button ID="btnAcCode" runat="server" Text="..." CssClass="btnHelp" OnClick="btnAcCode_Click"
+                <asp:TextBox ID="txtGroupCode" runat="server" Width="80px" CssClass="txt" AutoPostBack="false"
+                    OnTextChanged="txtGroupCode_TextChanged" Height="24px" onkeydown="Groupcode(event);"></asp:TextBox>
+                <asp:Button ID="btnGroupCode" runat="server" Text="..." CssClass="btnHelp" OnClick="btnGroupCode_Click"
                     Height="24px" Width="20px" />
-                <asp:Label ID="lblAcCodeName" runat="server" CssClass="lblName"></asp:Label>
-                <asp:RequiredFieldValidator ID="rfvtxtAcCode" runat="server" ControlToValidate="txtAcCode"
-                    CssClass="validator" Display="Dynamic" Enabled="false" ErrorMessage="Required"
-                    SetFocusOnError="true" Text="Required" ValidationGroup="add"> </asp:RequiredFieldValidator>
+                <asp:Label ID="lblGroupName" runat="server" CssClass="lblName"></asp:Label> 
                
             </td> 
                 </tr>
+              <tr> 
+              
+                <td align="right" style="width: 40%;">
+                    <b>Ac Code:</b>
+                </td>
+             <td align="left" colspan="5" style="width: 60%;">
+                <asp:TextBox ID="txtAcCode" runat="server" Width="80px" CssClass="txt" AutoPostBack="false"
+                    OnTextChanged="txtAcCode_TextChanged" Height="24px" onkeydown="Accode(event);"></asp:TextBox>
+                <asp:Button ID="btnAcCode" runat="server" Text="..." CssClass="btnHelp" OnClick="btnAcCode_Click"
+                    Height="24px" Width="20px" />
+                <asp:Label ID="lblAcName" runat="server" CssClass="lblName"></asp:Label> 
+               
+            </td> 
+                </tr>
+         <tr>
+               <td align="right">
+                    <b>Prosess:</b>
+                </td>
+                <td align="left" >
+                <asp:DropDownList ID="drpFilter" runat="server" CssClass="ddl" Width="280px" Height="25px"
+                     AutoPostBack="true">
+                    <asp:ListItem Text="All" Value=""></asp:ListItem>
+                    <asp:ListItem Text="Yes" Value="Y"></asp:ListItem>
+                    <asp:ListItem Text="No" Value="N"></asp:ListItem>
+                </asp:DropDownList>
+            </td>
+            </tr> 
+         <tr>
+               <td align="right">
+                    <b>Is Accounted:</b>
+                </td>
+                <td align="left" >
+                <asp:DropDownList ID="drpIsAccounted" runat="server" CssClass="ddl" Width="280px" Height="25px"
+                     AutoPostBack="true">
+                    <asp:ListItem Text="All" Value=""></asp:ListItem>
+                    <asp:ListItem Text="Yes" Value="Y"></asp:ListItem>
+                    <asp:ListItem Text="No" Value="N"></asp:ListItem>
+                </asp:DropDownList>
+            </td>
+            </tr> 
+                
          <tr>
                 <td align="right">
                     <b>From:</b>
@@ -188,7 +264,8 @@ function SelectRow(CurrentRow, RowIndex) {
                         PopupButtonID="imgcalender" Format="dd/MM/yyyy">
                     </ajax1:CalendarExtender>
                 </td>
-            </tr>
+             
+                </tr>
             <tr>
                 <td align="right">
                     <b>To:</b>
@@ -212,7 +289,7 @@ function SelectRow(CurrentRow, RowIndex) {
                     OnClick="btnPaindingReport_Click" Width="180px" Height="24px" OnClientClick="purchaseReprt();" />
             </td> 
            <td align="right" style="width: 50%;">
-                <asp:Button runat="server" ID="btnGroupwaiceTender" CssClass="btnHelp" Text="Group Wise Tender"
+                <asp:Button runat="server" ID="btnGroupwaiceTender" CssClass="btnHelp" Text="Group Summary"
                     OnClick="btnGroupwaiceTender_Click" Width="180px" Height="24px" />
             </td>
              

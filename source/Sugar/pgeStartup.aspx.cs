@@ -610,7 +610,7 @@ public partial class pgeStartup : System.Web.UI.Page
                                     Session["gitRepo"] = dt.Rows[0]["gitRepo"].ToString();
                                     Session["WaTitle"] = dt.Rows[0]["WaTitle"].ToString();
                                     Session["Mobile_No"] = dt.Rows[0]["Mobile_No"].ToString();
-
+                                   // Session["WhatsappUrl"] = dt.Rows[0]["WhatsappUrl"].ToString();
                                 }
                             }
                         }

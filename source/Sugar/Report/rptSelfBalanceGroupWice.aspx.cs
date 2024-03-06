@@ -60,7 +60,7 @@ public partial class Sugar_Report_rptSelfBalanceGroupWice : System.Web.UI.Page
         string strcon = System.Configuration.ConfigurationManager.ConnectionStrings["sqlconnection"].ConnectionString;
         using (SqlConnection con = new SqlConnection(strcon))
         {
-            SqlCommand cmd = new SqlCommand("select GroupName ,Tender_No,Lifting_DateConverted,millShortName,Quantal,Grade,Buyer_Quantal from qryGroupTenderHeadDetail " +
+            SqlCommand cmd = new SqlCommand("select * from qryGroupTenderHeadDetail " +
                                                 " where  Company_Code= '" + company_code + "' and Year_Code= '" + year_code + "' and Buyer_Quantal!=0  and membercode=2 and Group_Account=" + Ac_Code + " ", con);
             cmd.CommandType = CommandType.Text;
             SqlDataAdapter sda = new SqlDataAdapter(cmd);

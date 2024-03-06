@@ -37,6 +37,7 @@ public partial class Sugar_BussinessRelated_pgeGroupTenderPurchaseUtility : Syst
         dummy.Columns.Add("GroupName");
         dummy.Columns.Add("millShortName");
         dummy.Columns.Add("Quantal");
+        dummy.Columns.Add("Mill_Rate");
         dummy.Columns.Add("Grade");
         dummy.Columns.Add("ourTenderNo");
         dummy.Columns.Add("Buyer_Quantal");
@@ -65,7 +66,7 @@ public partial class Sugar_BussinessRelated_pgeGroupTenderPurchaseUtility : Syst
             string aa = s.ToString();
             // name += "Doc_No Like '%" + aa + "%'or";
             name += "( millShortName like '%" + aa + "%' or Tender_No like '%" + aa + "%' or Grade like '%" + aa +
-                "%' or  GroupName  like '%" + aa + "%' or grouptenderid like '%" + aa + "%' or Buyer_Quantal like '%" + aa + "%' or ourTenderNo like '%" + aa + "%' ) and";
+                "%' or  GroupName  like '%" + aa + "%' or grouptenderid like '%" + aa + "%' or Buyer_Quantal like '%" + aa + "%' or Mill_Rate like '%" + aa + "%' or ourTenderNo like '%" + aa + "%' ) and";
 
         }
         name = name.Remove(name.Length - 3);
@@ -78,7 +79,7 @@ public partial class Sugar_BussinessRelated_pgeGroupTenderPurchaseUtility : Syst
         //              " dbo.qrymstaccountmaster AS mill ON dbo.GroupTenderPurchase.mc = mill.accoid AND dbo.GroupTenderPurchase.Company_Code = mill.Company_Code " +
         //             " where " + name + " and dbo.GroupTenderPurchase.Company_Code=" + Company_Code + "  order by Tender_no desc ";
 
-        string query = " select  ROW_NUMBER() OVER ( order by Tender_No desc) AS RowNumber,  Tender_No,Tender_dateConverted,GroupName,millShortName,Quantal,Grade,isAccounted,Buyer_Quantal,grouptenderid,ourTenderNo,IsDeleted " +
+        string query = " select  ROW_NUMBER() OVER ( order by Tender_No desc) AS RowNumber,  Tender_No,Tender_dateConverted,GroupName,millShortName,Quantal,Mill_Rate,Grade,isAccounted,Buyer_Quantal,grouptenderid,ourTenderNo,IsDeleted " +
                        " from qryGroupTenderHeadDetail " +
                         " where " + name + " and membercode=2 and Company_Code=" + Company_Code + "  order by Tender_no desc ";
                        
