@@ -1794,7 +1794,7 @@ public partial class Sugar_pgeDeliveryOrderForGSTxmlNew : System.Web.UI.Page
                     string refdoid = clsCommon.getString(" select top(1)   DOC_NO from multiple_receipt_detail where Bill_Tran_Type ='DO'and Bill_Auto_Id=" + hdnf.Value);
                     if (hdnfsaleid.Value != "0")
                     {
-                        refsbno = clsCommon.getString(" select top(1)   DOC_NO from multiple_receipt_detail where Bill_Tran_Type ='SB'and Bill_Auto_Id=" + hdnfsaleid.Value);
+                       // refsbno = clsCommon.getString(" select top(1)   DOC_NO from multiple_receipt_detail where Bill_Tran_Type ='SB'and Bill_Auto_Id=" + hdnfsaleid.Value);
                     }
                     string concat = string.Empty;
 

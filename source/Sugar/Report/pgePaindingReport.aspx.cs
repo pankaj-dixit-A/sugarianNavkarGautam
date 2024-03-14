@@ -17,6 +17,7 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
     string qry = string.Empty;
     string user = string.Empty;
     string isAuthenticate = string.Empty;
+    string searchString = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
         user = Session["user"].ToString();
@@ -45,7 +46,7 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
     {
         try
         {
-            string searchString = txtGroupCode.Text;
+            searchString = txtGroupCode.Text;
             string Group_Account = string.Empty;
             if (txtGroupCode.Text != string.Empty)
             {
@@ -99,7 +100,7 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
     {
         try
         {
-            string searchString = txtAcCode.Text;
+            searchString = txtAcCode.Text;
             string Member_Account = string.Empty;
             if (txtAcCode.Text != string.Empty)
             {
@@ -110,21 +111,13 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
                 }
                 else
                 {
-                    Member_Account = clsCommon.getString("select member from qryGroupMemberUnion where member='" + txtAcCode.Text + "' and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + "");
+                    Member_Account = clsCommon.getString("select name from qryGroupMemberUnion where member='" + txtAcCode.Text + "' and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + "");
                     if (Member_Account != string.Empty && Member_Account != "0")
                     {
                         hdnfgid.Value = clsCommon.getString("select isnull(acid,0) as acid from qryGroupMemberUnion where member='" + txtAcCode.Text + "' and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + "");
-
-                        if (Member_Account.Length > 15)
-                        {
-                            Member_Account.Substring(0, 15);
-                        }
-                        else if (Member_Account.Length > 10)
-                        {
-                            Member_Account.Substring(0, 10);
-                        }
-                        lblGroupName.Text = Member_Account;
-                        setFocusControl(btnPaindingReport);
+                         
+                        lblAcName.Text = Member_Account;
+                        setFocusControl(drpFilter);
 
                     }
                     else
@@ -166,7 +159,7 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
         try
         {
             pnlPopup.Style["display"] = "block";
-            hdnfClosePopup.Value = "txtAcCode";
+            hdnfClosePopup.Value = "txtAcCode"; 
             btnSearch_Click(sender, e);
         }
         catch
@@ -234,6 +227,7 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
     {
         try
         {
+            //txtSearchText.Text = searchString;
             pnlPopup.Style["display"] = "block";
             string searchtxt = searchStr;
             string delimStr = "";
@@ -241,9 +235,9 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
             string words = searchStr;
             string[] split = null;
             string name = string.Empty;
-            if (searchStr != string.Empty && strTextbox == hdnfClosePopup.Value)
+            if (searchString != string.Empty )
             {
-                txtSearchText.Text = searchStr;
+                txtSearchText.Text = searchString;
                 searchtxt = txtSearchText.Text;
                 words = txtSearchText.Text;
                 split = words.Split(delimiter);
@@ -255,7 +249,7 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
                 words = txtSearchText.Text;
                 split = words.Split(delimiter);
             }
-            if (searchStr != string.Empty && strTextbox == hdnfClosePopup.Value)
+            if (searchStr != string.Empty )
             {
                 txtSearchText.Text = searchStr;
             }
@@ -268,7 +262,7 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
                 lblPopupHead.Text = "--Select Group Name --";
                 foreach (var s in split)
                 {
-                    string aa = s.ToString();
+                    string aa = txtSearchText.Text;
                     name += "( Doc_No like '%" + aa + "%' or GroupName like '%" + aa + "%') and";
                 }
                 name = name.Remove(name.Length - 3);
@@ -281,7 +275,7 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
                 lblPopupHead.Text = "--Select Member Name --";
                 foreach (var s in split)
                 {
-                    string aa = s.ToString();
+                    string aa = txtSearchText.Text;
                     name += "( member like '%" + aa + "%' or name like '%" + aa + "%') and";
                 }
                 name = name.Remove(name.Length - 3);

@@ -15,7 +15,7 @@
                   <DbCommand CommandType="Text" ModifiedByUser="true">
                     <CommandText>SELECT        Tender_No, Company_Code, Tender_Date, Tender_dateConverted, Lifting_Date, Lifting_DateConverted, Mill_Code, mc, Grade, Quantal, Packing, Bags, Mill_Rate, MillDeff, Created_By, Modified_By, Year_Code, grouptenderid, 
                          Narration, Group_Account, gid, itemcode, millName, GroupName, membercode, mid, Buyer_Quantal, Sale_Rate, paid, paidDate, paid_dateConverted, trnderdetailid, ItemAmount, profit, indivisulProfit, millContribution, 
-                         paidorreseive, membername, ID, otherPaid, Prosess, isAccounted
+                         paidorreseive, membername, ID, otherPaid, Prosess, isAccounted, millShortName
 FROM            qryGroupTenderHeadDetail</CommandText>
                     <Parameters />
                   </DbCommand>
@@ -65,6 +65,7 @@ FROM            qryGroupTenderHeadDetail</CommandText>
               <Mapping SourceColumn="otherPaid" DataSetColumn="otherPaid" />
               <Mapping SourceColumn="Prosess" DataSetColumn="Prosess" />
               <Mapping SourceColumn="isAccounted" DataSetColumn="isAccounted" />
+              <Mapping SourceColumn="millShortName" DataSetColumn="millShortName" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -76,7 +77,7 @@ FROM            qryGroupTenderHeadDetail</CommandText>
   <xs:element name="dsGroupTender" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="dsGroupTender" msprop:Generator_UserDSName="dsGroupTender">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="qryGroupTenderHeadDetail" msprop:Generator_TableClassName="qryGroupTenderHeadDetailDataTable" msprop:Generator_TableVarName="tableqryGroupTenderHeadDetail" msprop:Generator_RowChangedName="qryGroupTenderHeadDetailRowChanged" msprop:Generator_TablePropName="qryGroupTenderHeadDetail" msprop:Generator_RowDeletingName="qryGroupTenderHeadDetailRowDeleting" msprop:Generator_RowChangingName="qryGroupTenderHeadDetailRowChanging" msprop:Generator_RowEvHandlerName="qryGroupTenderHeadDetailRowChangeEventHandler" msprop:Generator_RowDeletedName="qryGroupTenderHeadDetailRowDeleted" msprop:Generator_RowClassName="qryGroupTenderHeadDetailRow" msprop:Generator_UserTableName="qryGroupTenderHeadDetail" msprop:Generator_RowEvArgName="qryGroupTenderHeadDetailRowChangeEvent">
+        <xs:element name="qryGroupTenderHeadDetail" msprop:Generator_TableClassName="qryGroupTenderHeadDetailDataTable" msprop:Generator_TableVarName="tableqryGroupTenderHeadDetail" msprop:Generator_TablePropName="qryGroupTenderHeadDetail" msprop:Generator_RowDeletingName="qryGroupTenderHeadDetailRowDeleting" msprop:Generator_RowChangingName="qryGroupTenderHeadDetailRowChanging" msprop:Generator_RowEvHandlerName="qryGroupTenderHeadDetailRowChangeEventHandler" msprop:Generator_RowDeletedName="qryGroupTenderHeadDetailRowDeleted" msprop:Generator_UserTableName="qryGroupTenderHeadDetail" msprop:Generator_RowChangedName="qryGroupTenderHeadDetailRowChanged" msprop:Generator_RowEvArgName="qryGroupTenderHeadDetailRowChangeEvent" msprop:Generator_RowClassName="qryGroupTenderHeadDetailRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Tender_No" msprop:Generator_ColumnVarNameInTable="columnTender_No" msprop:Generator_ColumnPropNameInRow="Tender_No" msprop:Generator_ColumnPropNameInTable="Tender_NoColumn" msprop:Generator_UserColumnName="Tender_No" type="xs:int" />
@@ -190,6 +191,13 @@ FROM            qryGroupTenderHeadDetail</CommandText>
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="millShortName" msprop:Generator_ColumnVarNameInTable="columnmillShortName" msprop:Generator_ColumnPropNameInRow="millShortName" msprop:Generator_ColumnPropNameInTable="millShortNameColumn" msprop:Generator_UserColumnName="millShortName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>

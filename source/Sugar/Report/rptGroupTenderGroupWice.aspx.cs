@@ -112,13 +112,13 @@ public partial class Sugar_Report_rptGroupTenderGroupWice : System.Web.UI.Page
             //sda.Fill(dt);
             if (GroupOrAccount == "B")
             {
-                if (Group_Account != "0")
+                if (Group_Account != "0" & Group_Account != "")
                 {
 
                     SqlCommand cmd = new SqlCommand("select Tender_No ,GroupName,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,Quantal, millName,MillDeff, membername, sum(Buyer_Quantal) as Buyer_Quantal,sum(ItemAmount ) as ItemAmount,sum(profit) as profit , " +
-                                                       " sum(indivisulProfit) as indivisulProfit,sum(millContribution) as millContribution,sum(paidorreseive) as paidorreseive,sum(paid) as paid,SUM(otherPaid) as otherPaid, Prosess,isAccounted from qryGroupTenderHeadDetail " +
+                                                       " sum(indivisulProfit) as indivisulProfit,sum(millContribution) as millContribution,sum(paidorreseive) as paidorreseive,sum(paid) as paid,SUM(otherPaid) as otherPaid, Prosess,isAccounted,millShortName from qryGroupTenderHeadDetail " +
                                                        " where " + Prosess + "   Group_Account='" + Group_Account + "' and Company_Code= '" + company_code + "' and Tender_Date between '" + FromDt + "' and '" + ToDt + "' " + Accounted + " " +
-                                                       " group by Tender_No,Quantal,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,GroupName,membername,MillDeff,millName, Prosess,isAccounted " +
+                                                       " group by Tender_No,Quantal,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,GroupName,membername,MillDeff,millName, Prosess,isAccounted,millShortName  " +
                                                        "  ", con);
                     cmd.CommandType = CommandType.Text;
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
@@ -127,9 +127,9 @@ public partial class Sugar_Report_rptGroupTenderGroupWice : System.Web.UI.Page
                 else
                 {
                     SqlCommand cmd = new SqlCommand("select Tender_No ,GroupName,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,Quantal, millName,MillDeff, membername, sum(Buyer_Quantal) as Buyer_Quantal,sum(ItemAmount ) as ItemAmount,sum(profit) as profit , " +
-                                                    " sum(indivisulProfit) as indivisulProfit,sum(millContribution) as millContribution,sum(paidorreseive) as paidorreseive,sum(paid) as paid,SUM(otherPaid) as otherPaid, Prosess,isAccounted from qryGroupTenderHeadDetail " +
+                                                    " sum(indivisulProfit) as indivisulProfit,sum(millContribution) as millContribution,sum(paidorreseive) as paidorreseive,sum(paid) as paid,SUM(otherPaid) as otherPaid, Prosess,isAccounted,millShortName  from qryGroupTenderHeadDetail " +
                                                     " where " + Prosess + "  Company_Code= '" + company_code + "' and Tender_Date between '" + FromDt + "' and '" + ToDt + "' " + Accounted + " " +
-                                                    " group by Tender_No,Quantal,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,GroupName,membername,MillDeff,millName, Prosess,isAccounted " +
+                                                    " group by Tender_No,Quantal,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,GroupName,membername,MillDeff,millName, Prosess,isAccounted,millShortName  " +
                                                     "  ", con);
                     cmd.CommandType = CommandType.Text;
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
@@ -138,24 +138,65 @@ public partial class Sugar_Report_rptGroupTenderGroupWice : System.Web.UI.Page
             }
             else {
 
-                if (Ac_no != "0")
+                if (Ac_no != "0" & Ac_no != "")
+                {
+                    
+                DataSet ds = new DataSet();
+                string qry = "select Group_Account from qryGroupTenderHeadDetail " +
+                             " where " + Prosess + " membercode='" + Ac_no + "' and Company_Code= '" + company_code + "' and Tender_Date between '" + FromDt + "' and '" + ToDt + "' " + Accounted + " " +
+                             " group by Group_Account ";
+
+                using (SqlCommand cmd = new SqlCommand(qry, con)) // Replace yourSqlConnection with your actual SqlConnection object
+                { 
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(ds);
+                    }
+                }
+
+                if (ds != null && ds.Tables.Count > 0)
                 {
 
-                    SqlCommand cmd = new SqlCommand("select Tender_No ,GroupName,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,Quantal, millName,MillDeff, membername, sum(Buyer_Quantal) as Buyer_Quantal,sum(ItemAmount ) as ItemAmount,sum(profit) as profit , " +
-                                                       " sum(indivisulProfit) as indivisulProfit,sum(millContribution) as millContribution,sum(paidorreseive) as paidorreseive,sum(paid) as paid,SUM(otherPaid) as otherPaid, Prosess,isAccounted from qryGroupTenderHeadDetail " +
-                                                       " where " + Prosess + "   membercode='" + Ac_no + "' and Company_Code= '" + company_code + "' and Tender_Date between '" + FromDt + "' and '" + ToDt + "' " + Accounted + " " +
-                                                       " group by Tender_No,Quantal,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,GroupName,membername,MillDeff,millName, Prosess,isAccounted " +
+                    DataTable dt1 = new DataTable();
+                    dt1 = ds.Tables[0];
+
+                    // Check if there are any rows
+                    if (dt1.Rows.Count > 0)
+                    {
+                        // Loop through rows and concatenate Group_Account values
+                        foreach (DataRow row in dt1.Rows)
+                        {
+                            Group_Account += ", " + row["Group_Account"].ToString();
+                        }
+
+                        // Remove the leading comma and space
+                        Group_Account = Group_Account.TrimStart(',', ' ');
+                    }
+                    else
+                    {
+                        // Handle case where there are no rows
+                    }
+                }
+                else
+                {
+                    // Handle case where DataSet is null or empty
+                }
+                    SqlCommand cmd1 = new SqlCommand("select Tender_No ,GroupName,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,Quantal, millName,MillDeff, membername, sum(Buyer_Quantal) as Buyer_Quantal,sum(ItemAmount ) as ItemAmount,sum(profit) as profit , " +
+                                                       " sum(indivisulProfit) as indivisulProfit,sum(millContribution) as millContribution,sum(paidorreseive) as paidorreseive,sum(paid) as paid,SUM(otherPaid) as otherPaid, Prosess,isAccounted,millShortName  from qryGroupTenderHeadDetail " +
+                                                       " where " + Prosess + "   Group_Account in (" + Group_Account + ") and Company_Code= '" + company_code + "' and Tender_Date between '" + FromDt + "' and '" + ToDt + "' " + Accounted + " " +
+                                                       " group by Tender_No,Quantal,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,GroupName,membername,MillDeff,millName, Prosess,isAccounted,millShortName  " +
                                                        "  ", con);
-                    cmd.CommandType = CommandType.Text;
-                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    cmd1.CommandType = CommandType.Text;
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd1);
                     sda.Fill(dt);
                 }
                 else
                 {
                     SqlCommand cmd = new SqlCommand("select Tender_No ,GroupName,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,Quantal, millName,MillDeff, membername, sum(Buyer_Quantal) as Buyer_Quantal,sum(ItemAmount ) as ItemAmount,sum(profit) as profit , " +
-                                                    " sum(indivisulProfit) as indivisulProfit,sum(millContribution) as millContribution,sum(paidorreseive) as paidorreseive,sum(paid) as paid,SUM(otherPaid) as otherPaid, Prosess,isAccounted from qryGroupTenderHeadDetail " +
+                                                    " sum(indivisulProfit) as indivisulProfit,sum(millContribution) as millContribution,sum(paidorreseive) as paidorreseive,sum(paid) as paid,SUM(otherPaid) as otherPaid, Prosess,isAccounted,millShortName  from qryGroupTenderHeadDetail " +
                                                     " where " + Prosess + "  Company_Code= '" + company_code + "' and Tender_Date between '" + FromDt + "' and '" + ToDt + "' " + Accounted + " " +
-                                                    " group by Tender_No,Quantal,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,GroupName,membername,MillDeff,millName, Prosess,isAccounted " +
+                                                    " group by Tender_No,Quantal,Tender_dateConverted,Lifting_DateConverted,Grade,Mill_Rate,GroupName,membername,MillDeff,millName, Prosess,isAccounted,millShortName  " +
                                                     "  ", con);
                     cmd.CommandType = CommandType.Text;
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);

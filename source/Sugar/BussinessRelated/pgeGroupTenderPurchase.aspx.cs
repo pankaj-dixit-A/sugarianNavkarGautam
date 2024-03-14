@@ -3641,7 +3641,7 @@ public partial class Sugar_BussinessRelated_pgeGroupTenderPurchase : System.Web.
 
             rate = srate - (millRate);
             profit = qntl * rate;
-            hdnfProfit.Value = profit.ToString();
+            hdnfProfit.Value = profit.ToString(); 
             ReverseAmount = qntl * RatePerQtl;
             txtReverseAmount.Text = ReverseAmount.ToString();
 
