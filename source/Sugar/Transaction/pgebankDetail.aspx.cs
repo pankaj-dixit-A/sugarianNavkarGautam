@@ -110,6 +110,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
+        
         cs = ConfigurationManager.ConnectionStrings["sqlconnection"].ConnectionString;
         con = new SqlConnection(cs);
         user = Session["user"].ToString();
@@ -175,6 +176,9 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
                     if (a == false)
                     {
                         btnAC_Code_Click(this, new EventArgs());
+                        
+                       
+                 
                     }
                     else
                     {
@@ -182,7 +186,8 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
                         {
                             BP_Account = clsCommon.getString("select Ac_Name_E from qrymstaccountmaster where Ac_type='T' and  Ac_Code='" + txtAC_Code.Text + "' and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + "");
                         }
-                        else {
+                        else
+                        {
                             BP_Account = clsCommon.getString("select Ac_Name_E from qrymstaccountmaster where  Ac_type in('P','M','S') and Ac_Code='" + txtAC_Code.Text + "' and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + "");
                         }
                         if (BP_Account != string.Empty && BP_Account != "0")
@@ -212,7 +217,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
                                         txtIFSC3.Text = dt.Rows[0]["payIfsc3"].ToString();
                                         txtbankname3.Text = dt.Rows[0]["PayBankName3"].ToString();
                                         txtbeneficiary3.Text = dt.Rows[0]["BeneficiaryName3"].ToString();
-                                        txtVerifyAcNo3.Text = dt.Rows[0]["VerifyAcNo3"].ToString(); 
+                                        txtVerifyAcNo3.Text = dt.Rows[0]["VerifyAcNo3"].ToString();
                                     }
                                 }
                             }
@@ -255,7 +260,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
                             {
                                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SuccessMessage", "alert('Only Mill And Party Payment Account!');", true);
                             }
-                           
+
                             setFocusControl(txtAC_Code);
                         }
                     }
@@ -287,6 +292,10 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
         strTextBox = "txtAC_Code";
         csCalculations();
         enableddisabled();
+        txtBankAcNo.Enabled = true;
+        txtBankAcNo.Focus();
+        
+    
     }
     #endregion
 
@@ -301,6 +310,9 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
                 hdnfClosePopup.Value = "txtAC_Code";
                 pnlPopup.Style["display"] = "block";
                 btnSearch_Click(sender, e);
+                txtBankAcNo.Focus();
+               
+                
             }
             else
             {
@@ -322,7 +334,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     {
         txtAC_Code.Text = string.Empty;
         lblACName.Text = string.Empty;
-        txtBankAcNo.Text = string.Empty;
+        txtBankAcNo.Text = string.Empty;    
         txtIFSC.Text = string.Empty;
         txtbankname.Text = string.Empty;
         txtbeneficiary.Text = string.Empty;
@@ -353,14 +365,18 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
         enableddisabled();
         setFocusControl(txtVerifyAcNo);
         pnlPopup.Style["display"] = "none";
+        txtBankAcNo.Enabled = false;
+
     }
     #endregion
 
     #region [txtVerifyAcNo_TextChanged]
     protected void txtVerifyAcNo_TextChanged(object sender, EventArgs e)
     {
+        
         enableddisabled();
         setFocusControl(txtIFSC);
+        txtBankAcNo.Enabled = false;
         pnlPopup.Style["display"] = "none";
     }
     #endregion
@@ -386,20 +402,31 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     {
         enableddisabled();
         setFocusControl(txtBankAcNo2);
+        txtBankAcNo2.Enabled = true;
+        txtBankAcNo2.Focus();
+        
+       
     }
     #endregion
 
     #region [txtBankAcNo2_TextChanged]
     protected void txtBankAcNo2_TextChanged(object sender, EventArgs e)
     {
+        
+       
         enableddisabled();
+        txtBankAcNo2.Enabled = true;
+        txtBankAcNo2.Enabled = false;
         setFocusControl(txtVerifyAcNo2);
+        
+        
     }
     #endregion
 
     #region [txtVerifyAcNo2_TextChanged]
     protected void txtVerifyAcNo2_TextChanged(object sender, EventArgs e)
     {
+        
         enableddisabled();
         setFocusControl(txtIFSC2);
     }
@@ -426,6 +453,9 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     {
         enableddisabled();
         setFocusControl(txtBankAcNo3);
+        txtBankAcNo3.Enabled = true;
+        txtBankAcNo2.Focus();
+        
     }
     #endregion
 
@@ -435,6 +465,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     protected void txtBankAcNo3_TextChanged(object sender, EventArgs e)
     {
         enableddisabled();
+        txtBankAcNo3.Enabled = false;
         setFocusControl(txtVerifyAcNo3);
     }
     #endregion
@@ -471,10 +502,11 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
         {
             setFocusControl(btnUpdate);
         }
-        else {
+        else
+        {
             setFocusControl(btnOtp);
         }
-       
+
     }
     #endregion
 
@@ -527,12 +559,14 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
                 lblWrongOtp.Text = "Wrong OTP Code.Please Enter Correct OTP!";
                 lblResendOtp.Text = "";
             }
+            txtOtpVerification.Text = "";
         }
         catch (Exception)
         {
             throw;
         }
     }
+
     protected void resendlnk_Click(object sender, EventArgs e)
     {
     }
@@ -542,6 +576,206 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     {
         try
         {
+            string BankAcNo = string.Empty;
+            int flag = 0;
+            string IFSC = string.Empty;
+            string BankName = string.Empty;
+            string BeneficiaryName = string.Empty;
+            string BankAcNo2 = string.Empty;
+            string IFSC2 = string.Empty;
+            string Bankname2 = string.Empty;
+            string BeneficiaryName2 = string.Empty;
+            string BankAcNo3 = string.Empty;
+            string IFSC3 = string.Empty;
+            string Bankname3 = string.Empty;
+            string BeneficiaryName3 = string.Empty;
+            string SelectedBank = string.Empty;
+            string VerifyAcNo = string.Empty;
+            string VerifyAcNo2 = string.Empty;
+            string VerifyAcNo3 = string.Empty;
+            
+            if (txtAC_Code.Text == "" || txtAC_Code.Text == "2")
+            {
+                setFocusControl(txtAC_Code);
+                return;
+
+            }
+
+            if (txtBankAcNo.Text != txtVerifyAcNo.Text)
+            {
+                setFocusControl(txtVerifyAcNo);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "", "alert('Bank A/c No & Verify A/c No Are Not a Same!');", true);
+                return;
+            }
+
+            if (txtBankAcNo2.Text != txtVerifyAcNo2.Text)
+            {
+                setFocusControl(txtVerifyAcNo2);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "", "alert('Bank A/c No 2 & Verify A/c No 2 Are Not a Same!');", true);
+                return;
+            }
+
+            if (txtBankAcNo3.Text != txtVerifyAcNo3.Text)
+            {
+                setFocusControl(txtVerifyAcNo3);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "", "alert('Bank A/c No 3 & Verify A/c No 3 Are Not a Same!');", true);
+                return;
+            }
+
+            Int32 accode = txtAC_Code.Text != string.Empty ? Convert.ToInt32(txtAC_Code.Text) : 0;
+            Int32 acid = hdnfacid.Value != string.Empty ? Convert.ToInt32(hdnfacid.Value) : 0;
+            BankAcNo = txtBankAcNo.Text != string.Empty ? Convert.ToString(txtBankAcNo.Text) : "";
+            IFSC = txtIFSC.Text != string.Empty ? Convert.ToString(txtIFSC.Text.Trim().ToUpper()) : "";
+            BankName = txtbankname.Text != string.Empty ? Convert.ToString(txtbankname.Text) : "";
+            BeneficiaryName = txtbeneficiary.Text != string.Empty ? Convert.ToString(txtbeneficiary.Text) : "";
+            BankAcNo2 = txtBankAcNo2.Text != string.Empty ? Convert.ToString(txtBankAcNo2.Text) : "";
+            IFSC2 = txtIFSC2.Text != string.Empty ? Convert.ToString(txtIFSC2.Text.Trim().ToUpper()) : "";
+            Bankname2 = txtbankname2.Text != string.Empty ? Convert.ToString(txtbankname2.Text) : "";
+            BeneficiaryName2 = txtbeneficiary2.Text != string.Empty ? Convert.ToString(txtbeneficiary2.Text) : "";
+
+            BankAcNo3 = txtBankAcNo3.Text != string.Empty ? Convert.ToString(txtBankAcNo3.Text) : "";
+            IFSC3 = txtIFSC3.Text != string.Empty ? Convert.ToString(txtIFSC3.Text.Trim().ToUpper()) : "";
+            Bankname3 = txtbankname3.Text != string.Empty ? Convert.ToString(txtbankname3.Text) : "";
+            BeneficiaryName3 = txtbeneficiary3.Text != string.Empty ? Convert.ToString(txtbeneficiary3.Text) : "";
+            SelectedBank = drpSelectedBank.SelectedValue != string.Empty ? Convert.ToString(drpSelectedBank.SelectedValue) : "";
+
+            VerifyAcNo = txtVerifyAcNo.Text != string.Empty ? Convert.ToString(txtVerifyAcNo.Text) : "";
+            VerifyAcNo2 = txtVerifyAcNo2.Text != string.Empty ? Convert.ToString(txtVerifyAcNo2.Text) : "";
+            VerifyAcNo3 = txtVerifyAcNo3.Text != string.Empty ? Convert.ToString(txtVerifyAcNo3.Text) : "";
+            // BeneficiaryName  =   ValidateAndTrimField(txtbeneficiary.Text, 50);
+
+          
+           
+          
+            if (txtBankAcNo.Text != String.Empty && txtVerifyAcNo.Text != String.Empty)
+            {
+
+                if (IFSC.Length != 11)
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "IFSCErrorMessage", "alert('IFSC Code Is Must be 11');", true);
+                        setFocusControl(txtIFSC);
+                        return;
+                       
+                    }
+                if (txtbankname.Text == String.Empty )
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "BankNameErrorMessage", "alert('Bank Name cannot be empty.');", true);
+                    setFocusControl(txtbankname);
+                    return;
+                }
+                if (txtbeneficiary.Text == String.Empty )
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "BankNameErrorMessage", "alert('beneficiary name cannot be empty.');", true);
+                    setFocusControl(txtbankname);
+                    return;
+                }
+               int maxBeneficiaryNameLength = 24;
+
+
+               if (BeneficiaryName.Length > maxBeneficiaryNameLength)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "BankNameErrorMessage", "alert('BeneficiaryName Maximum Length 24 Characters!');", true);
+                    setFocusControl(txtbeneficiary);
+                        return;
+                    }
+
+            }
+
+
+
+
+
+             if (txtBankAcNo2.Text != String.Empty && txtVerifyAcNo2.Text != String.Empty)
+            {
+
+                if (IFSC2.Length != 11)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "IFSCErrorMessage", "alert('IFSC2 Code Is Must be 11');", true);
+                    setFocusControl(txtIFSC);
+                    return;
+
+                }
+                if (txtbankname2.Text == String.Empty)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "BankNameErrorMessage", "alert('Bank Name cannot be empty.');", true);
+                    setFocusControl(txtbankname);
+                    return;
+                }
+                if (txtbeneficiary2.Text == String.Empty)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "BankNameErrorMessage", "alert('beneficiary name cannot be empty.');", true);
+                    setFocusControl(txtbankname);
+                    return;
+                }
+            }
+
+
+             if (txtBankAcNo3.Text != String.Empty && txtVerifyAcNo3.Text != String.Empty)
+            {
+
+                if (IFSC3.Length != 11)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "IFSCErrorMessage", "alert('IFSC3 Code Is Must be 11');", true);
+                    setFocusControl(txtIFSC);
+                    return;
+
+                }
+                if (txtbankname3.Text == String.Empty)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "BankNameErrorMessage", "alert('Bank Name cannot be empty.');", true);
+                    setFocusControl(txtbankname);
+                    return;
+                }
+                if (txtbeneficiary3.Text == String.Empty)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "BankNameErrorMessage", "alert('beneficiary name cannot be empty.');", true);
+                    setFocusControl(txtbankname);
+                    return;
+                }
+            }
+                   
+
+                
+            
+
+
+            #region Create Update Query
+            AC_Update = AC_Update + "payBankAc=";
+            AC_Update = AC_Update + "'" + BankAcNo + "',";
+            AC_Update = AC_Update + "payIfsc=";
+            AC_Update = AC_Update + "'" + IFSC + "',";
+            AC_Update = AC_Update + "PayBankName=";
+            AC_Update = AC_Update + "'" + BankName + "',";
+            AC_Update = AC_Update + "BeneficiaryName=";
+            AC_Update = AC_Update + "'" + BeneficiaryName + "',";
+            AC_Update = AC_Update + "payBankAc2=";
+            AC_Update = AC_Update + "'" + BankAcNo2 + "',";
+            AC_Update = AC_Update + "payIfsc2=";
+            AC_Update = AC_Update + "'" + IFSC2 + "',";
+            AC_Update = AC_Update + "PayBankName2=";
+            AC_Update = AC_Update + "'" + Bankname2 + "',";
+            AC_Update = AC_Update + "BeneficiaryName2=";
+            AC_Update = AC_Update + "'" + BeneficiaryName2 + "',";
+            AC_Update = AC_Update + "payBankAc3=";
+            AC_Update = AC_Update + "'" + BankAcNo3 + "',";
+            AC_Update = AC_Update + "payIfsc3=";
+            AC_Update = AC_Update + "'" + IFSC3 + "',";
+            AC_Update = AC_Update + "PayBankName3=";
+            AC_Update = AC_Update + "'" + Bankname3 + "',";
+            AC_Update = AC_Update + "BeneficiaryName3=";
+            AC_Update = AC_Update + "'" + BeneficiaryName3 + "',";
+            AC_Update = AC_Update + "SelectedBank=";
+            AC_Update = AC_Update + "'" + SelectedBank + "',";
+            AC_Update = AC_Update + "VerifyAcNo=";
+            AC_Update = AC_Update + "'" + VerifyAcNo + "',";
+            AC_Update = AC_Update + "VerifyAcNo2=";
+            AC_Update = AC_Update + "'" + VerifyAcNo2 + "',";
+            AC_Update = AC_Update + "VerifyAcNo3=";
+            AC_Update = AC_Update + "'" + VerifyAcNo3 + "'";
+            #endregion
+         
+
+
             if (!string.IsNullOrEmpty(txtAC_Code.Text.TrimStart('0')) && txtAC_Code.Text.TrimStart('0') != "2")
             {
                 tempOTP = new DataTable();
@@ -721,6 +955,8 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
 
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
+
+        txtBankAcNo.Enabled = true;
         string BankAcNo = string.Empty;
         int flag = 0;
         string IFSC = string.Empty;
@@ -745,9 +981,10 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
 
         }
 
-        if (txtBankAcNo.Text != txtVerifyAcNo.Text) {
+        if (txtBankAcNo.Text != txtVerifyAcNo.Text)
+        {
             setFocusControl(txtVerifyAcNo);
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "", "alert('Bank A/c No & Verify A/c No Are Not a Same!');", true); 
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "", "alert('Bank A/c No & Verify A/c No Are Not a Same!');", true);
             return;
         }
 
@@ -767,24 +1004,24 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
 
         Int32 accode = txtAC_Code.Text != string.Empty ? Convert.ToInt32(txtAC_Code.Text) : 0;
         Int32 acid = hdnfacid.Value != string.Empty ? Convert.ToInt32(hdnfacid.Value) : 0;
-        BankAcNo = txtBankAcNo.Text != string.Empty ? Convert.ToString(txtBankAcNo.Text) : "0";
-        IFSC = txtIFSC.Text != string.Empty ? Convert.ToString(txtIFSC.Text) : "0";
-        BankName = txtbankname.Text != string.Empty ? Convert.ToString(txtbankname.Text) : "0";
-        BeneficiaryName = txtbeneficiary.Text != string.Empty ? Convert.ToString(txtbeneficiary.Text) : "0";
-        BankAcNo2 = txtBankAcNo2.Text != string.Empty ? Convert.ToString(txtBankAcNo2.Text) : "0";
-        IFSC2 = txtIFSC2.Text != string.Empty ? Convert.ToString(txtIFSC2.Text) : "0";
-        Bankname2 = txtbankname2.Text != string.Empty ? Convert.ToString(txtbankname2.Text) : "0";
-        BeneficiaryName2 = txtbeneficiary2.Text != string.Empty ? Convert.ToString(txtbeneficiary2.Text) : "0";
+        BankAcNo = txtBankAcNo.Text != string.Empty ? Convert.ToString(txtBankAcNo.Text) : "";
+        IFSC = txtIFSC.Text != string.Empty ? Convert.ToString(txtIFSC.Text.Trim().ToUpper()) : "";
+        BankName = txtbankname.Text != string.Empty ? Convert.ToString(txtbankname.Text) : "";
+        BeneficiaryName = txtbeneficiary.Text != string.Empty ? Convert.ToString(txtbeneficiary.Text) : "";
+        BankAcNo2 = txtBankAcNo2.Text != string.Empty ? Convert.ToString(txtBankAcNo2.Text) : "";
+        IFSC2 = txtIFSC2.Text != string.Empty ? Convert.ToString(txtIFSC2.Text.Trim().ToUpper()) : "";
+        Bankname2 = txtbankname2.Text != string.Empty ? Convert.ToString(txtbankname2.Text) : "";
+        BeneficiaryName2 = txtbeneficiary2.Text != string.Empty ? Convert.ToString(txtbeneficiary2.Text) : "";
 
-        BankAcNo3 = txtBankAcNo3.Text != string.Empty ? Convert.ToString(txtBankAcNo3.Text) : "0";
-        IFSC3 = txtIFSC3.Text != string.Empty ? Convert.ToString(txtIFSC3.Text) : "0";
-        Bankname3 = txtbankname3.Text != string.Empty ? Convert.ToString(txtbankname3.Text) : "0";
-        BeneficiaryName3 = txtbeneficiary3.Text != string.Empty ? Convert.ToString(txtbeneficiary3.Text) : "0";
-        SelectedBank = drpSelectedBank.SelectedValue != string.Empty ? Convert.ToString(drpSelectedBank.SelectedValue) : "0";
+        BankAcNo3 = txtBankAcNo3.Text != string.Empty ? Convert.ToString(txtBankAcNo3.Text) : "";
+        IFSC3 = txtIFSC3.Text != string.Empty ? Convert.ToString(txtIFSC3.Text.Trim().ToUpper()) : "";
+        Bankname3 = txtbankname3.Text != string.Empty ? Convert.ToString(txtbankname3.Text) : "";
+        BeneficiaryName3 = txtbeneficiary3.Text != string.Empty ? Convert.ToString(txtbeneficiary3.Text) : "";
+        SelectedBank = drpSelectedBank.SelectedValue != string.Empty ? Convert.ToString(drpSelectedBank.SelectedValue) : "";
 
-        VerifyAcNo = txtVerifyAcNo.Text != string.Empty ? Convert.ToString(txtVerifyAcNo.Text) : "0";
-        VerifyAcNo2 = txtVerifyAcNo2.Text != string.Empty ? Convert.ToString(txtVerifyAcNo2.Text) : "0";
-        VerifyAcNo3 = txtVerifyAcNo3.Text != string.Empty ? Convert.ToString(txtVerifyAcNo3.Text) : "0";
+        VerifyAcNo = txtVerifyAcNo.Text != string.Empty ? Convert.ToString(txtVerifyAcNo.Text) : "";
+        VerifyAcNo2 = txtVerifyAcNo2.Text != string.Empty ? Convert.ToString(txtVerifyAcNo2.Text) : "";
+        VerifyAcNo3 = txtVerifyAcNo3.Text != string.Empty ? Convert.ToString(txtVerifyAcNo3.Text) : "";
         // BeneficiaryName  =   ValidateAndTrimField(txtbeneficiary.Text, 50);
 
         if (BeneficiaryName.Length > 24)
@@ -807,26 +1044,33 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
             return;
         }
 
-        if (IFSC.Length != 11)
+        if (IFSC.Length != 11 && IFSC.Length != 0)
         {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SuccessMessage", "alert('IFSC Maximum Length 11 Characters!');", true);
-            setFocusControl(txtIFSC);
-            return;
-        }
 
-        if (IFSC2.Length != 11)
-        {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SuccessMessage", "alert('IFSC2 Maximum Length 11 Characters!');", true);
-            setFocusControl(txtIFSC2);
-            return;
-        }
+            if (IFSC.Length != 11 && IFSC.Length != 0)
+            {
+                 
+            }
+            else if (IFSC.Length != 11 && IFSC.Length != 0) {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "IFSCErrorMessage", "alert('IFSC length should be 11 characters!');", true);
+                setFocusControl(txtIFSC);
+            }
+            else if (IFSC2.Length != 11 && IFSC2.Length != 0)
+            {
 
-        if (IFSC3.Length != 11)
-        {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SuccessMessage", "alert('IFSC3 Maximum Length 11 Characters!');", true);
-            setFocusControl(txtIFSC3);
-            return;
+
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "IFSC2ErrorMessage", "alert('IFSC2 length should be 11 characters!');", true);
+                setFocusControl(txtIFSC2);
+            }
+            else if (IFSC3.Length != 11 && IFSC3.Length != 0)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "IFSC3ErrorMessage", "alert('IFSC3 length should be 11 characters!');", true);
+                setFocusControl(txtIFSC3);
+            }
+            
         }
+         
+
 
         #region Create Update Query
         AC_Update = AC_Update + "payBankAc=";
@@ -850,7 +1094,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
         AC_Update = AC_Update + "payIfsc3=";
         AC_Update = AC_Update + "'" + IFSC3 + "',";
         AC_Update = AC_Update + "PayBankName3=";
-        AC_Update = AC_Update + "'" + Bankname3 + "',"; 
+        AC_Update = AC_Update + "'" + Bankname3 + "',";
         AC_Update = AC_Update + "BeneficiaryName3=";
         AC_Update = AC_Update + "'" + BeneficiaryName3 + "',";
         AC_Update = AC_Update + "SelectedBank=";
@@ -892,7 +1136,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
             txtbeneficiary3.Text = string.Empty;
             txtVerifyAcNo3.Text = string.Empty;
             //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), " ", "alert('Record Successfully Update !')", true);
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SuccessMessage", "alert('Record Successfully Updated!'); window.reload();", true);
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SuccessMessage", "alert('Record Successfully Updated!'); window.location.reload();", true);
         }
     }
 
@@ -1201,7 +1445,8 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
             }
             else
             {
-                btnUpdate.Visible = false;
+                             btnUpdate.Visible = false;
+               // btnUpdate.Visible = true;
                 btnOtp.Visible = true;
             }
         }
@@ -1215,10 +1460,12 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
             }
             else
             {
-                btnUpdate.Visible = false;
+                          btnUpdate.Visible = false;
+              // btnUpdate.Visible = true;
                 btnOtp.Visible = true;
             }
         }
     }
     #endregion
 }
+

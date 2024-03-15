@@ -5,6 +5,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
+
     <script type="text/javascript" language="javascript">
         function Confirm() {
             var confirm_value = document.createElement("INPUT");
@@ -572,31 +573,32 @@ function SelectRow(CurrentRow, RowIndex) {
             <asp:HiddenField ID="hdnfProcessed" runat="server" />
             <asp:HiddenField ID="hdnfbankTransactionId" runat="server" />
             <asp:HiddenField ID="hdnfisPaymentDone" runat="server" />
+             <asp:HiddenField ID="hdnfPayment_Type" runat="server" />
 
             <table width="80%" align="left">
                 <tr>
                     <td align="center">
                         <asp:Button ID="btnAdd" runat="server" Text="Add New" CssClass="btnHelp" Width="90px"
-                            ValidationGroup="save" OnClick="btnAdd_Click" Height="24px" />
+                            ValidationGroup="save" OnClick="btnAdd_Click" Height="24px"  TabIndex="19" />
                         &nbsp;
                         <asp:Button ID="btnSave" OnClientClick="if (!Validate()) return false;" runat="server" Text="Save" CssClass="btnHelp" Width="90px"
-                            ValidationGroup="add" OnClick="btnSave_Click" Height="24px" />
+                            ValidationGroup="add" OnClick="btnSave_Click" Height="24px"  TabIndex="20" />
                         &nbsp;
                         <asp:Button ID="btnEdit" runat="server" Text="Edit" CssClass="btnHelp" Width="90px"
                             ValidationGroup="save" OnClick="btnEdit_Click" Height="24px" />
                         &nbsp;
                         <asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btnHelp" Width="90px"
-                            ValidationGroup="add" OnClick="btnDelete_Click" OnClientClick="Confirm()" Height="24px" />
+                            ValidationGroup="add" OnClick="btnDelete_Click" OnClientClick="Confirm()" Height="24px"  TabIndex="21" />
                         &nbsp;
                         <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btnHelp" Width="90px"
-                            ValidationGroup="save" OnClick="btnCancel_Click" Height="24px" />
+                            ValidationGroup="save" OnClick="btnCancel_Click" Height="24px"  TabIndex="22" />
                         &nbsp;&nbsp;
                         <asp:Button ID="btnBack" runat="server" Text="Back" CssClass="btnHelp" Width="90px"
-                            ValidationGroup="save" Height="24px" TabIndex="24" OnClientClick="Back();" />
+                            ValidationGroup="save" Height="24px" TabIndex="23" OnClientClick="Back();" />
                         &nbsp;<asp:Button runat="server" ID="btnUtrReport" Text="Print" Width="80px" Height="24px"
                             OnClick="btnUtrReport_Click" CssClass="btnHelp" />
                          &nbsp; <asp:Button runat="server" ID="btnPendingPayments" Text="Pending Payments" CssClass="btnHelp"
-                            Width="120px" Height="24px" OnClientClick="SB();" />
+                            Width="120px" Height="24px" OnClientClick="SB();"  TabIndex="24" />
                     </td>
                      <td align="center">
                         <asp:Button ID="btnFirst" runat="server" Text="<<" ToolTip="First" CssClass="btnHelp"
@@ -680,11 +682,12 @@ function SelectRow(CurrentRow, RowIndex) {
                         </td>
                         <td align="left" style="width: 20%;">
                       <asp:DropDownList ID="drpPaymentType" runat="server" CssClass="ddl" Width="100px" Height="24px"  TabIndex="5"
-                AutoPostBack="true" OnSelectedIndexChanged="drpPaymentType_SelectedIndexChanged"> 
+                AutoPostBack="true" OnSelectedIndexChanged="drpPaymentType_SelectedIndexChanged" > 
                 <asp:ListItem Text="Select" Value="EMPT" Selected="True"></asp:ListItem>
                 <asp:ListItem Text="RTGS" Value="RTGS"></asp:ListItem> 
                 <asp:ListItem Text="IMPS" Value="IMPS"></asp:ListItem> 
                 <asp:ListItem Text="NEFT" Value="NEFT"></asp:ListItem> 
+                <asp:ListItem Text="IFT" Value="IFT"></asp:ListItem> 
             </asp:DropDownList>
                             </td>
                         </tr>
@@ -692,7 +695,7 @@ function SelectRow(CurrentRow, RowIndex) {
                             <td align="left">Bank Code
                             </td>
                             <td align="left">
-                                <asp:TextBox Height="24px" ID="txtbank_ac" runat="Server" CssClass="txt" TabIndex="4"
+                                <asp:TextBox Height="24px" ID="txtbank_ac" runat="Server" CssClass="txt" TabIndex="6"
                                     Width="90px" Style="text-align: left;" AutoPostBack="false" OnTextChanged="txtbank_ac_TextChanged" onkeydown="bank_ac(event);"></asp:TextBox>
                                 <asp:Button Width="20px" Height="24px" ID="btntxtbank_ac" runat="server" Text="..."
                                     OnClick="btntxtbank_ac_Click" CssClass="btnHelp" />
@@ -705,7 +708,7 @@ function SelectRow(CurrentRow, RowIndex) {
                             <td align="left">Mill Code
                             </td>
                             <td align="left">
-                                <asp:TextBox Height="24px" ID="txtmill_code" runat="Server" CssClass="txt" TabIndex="5"
+                                <asp:TextBox Height="24px" ID="txtmill_code" runat="Server" CssClass="txt" TabIndex="7"
                                     Width="90px" Style="text-align: left;" AutoPostBack="false" OnTextChanged="txtmill_code_TextChanged" onkeydown="MillCode(event);"></asp:TextBox>
                                 <asp:Button Width="20px" Height="24px" ID="btntxtmill_code" runat="server" Text="..."
                                     OnClick="btntxtmill_code_Click" CssClass="btnHelp" />
@@ -745,7 +748,7 @@ function SelectRow(CurrentRow, RowIndex) {
                             <td align="left">Amount
                             </td>
                             <td align="left">
-                                <asp:TextBox Height="24px" ID="txtamount" runat="Server" CssClass="txt" TabIndex="7"
+                                <asp:TextBox Height="24px" ID="txtamount" runat="Server" CssClass="txt" TabIndex="8"
                                     Width="90px" Style="text-align: left;" AutoPostBack="false" OnTextChanged="txtamount_TextChanged"></asp:TextBox>
                                 <ajax1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="Numbers,Custom"
                                     ValidChars="." TargetControlID="txtamount">
@@ -756,7 +759,7 @@ function SelectRow(CurrentRow, RowIndex) {
                             <td align="left">Utr No
                             </td>
                             <td align="left">
-                                <asp:TextBox Height="24px" ID="txtunt_no" runat="Server" CssClass="txt" TabIndex="8"
+                                <asp:TextBox Height="24px" ID="txtunt_no" runat="Server" CssClass="txt" TabIndex="9"
                                     Width="300px" Style="text-align: left;"></asp:TextBox>
                             </td>
                         </tr>
@@ -765,7 +768,7 @@ function SelectRow(CurrentRow, RowIndex) {
                             </td>
                             <td align="left">
                                 <asp:TextBox Height="24px" ID="txtnarration_header" runat="Server" CssClass="txt"
-                                    TabIndex="9" Width="300px" Style="text-align: left;"></asp:TextBox>
+                                    TabIndex="10" Width="300px" Style="text-align: left;"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -773,7 +776,7 @@ function SelectRow(CurrentRow, RowIndex) {
                             </td>
                             <td align="left">
                                 <asp:TextBox Height="24px" ID="txtnarration_footer" runat="Server" CssClass="txt"
-                                    TabIndex="10" Width="300px" Style="text-align: left;"></asp:TextBox>
+                                    TabIndex="11" Width="300px" Style="text-align: left;"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -786,7 +789,7 @@ function SelectRow(CurrentRow, RowIndex) {
                         <tr>
                             <td colspan="4" align="left">
                                 <asp:Button ID="btnOpenDetailsPopup" runat="server" Text="ADD" CssClass="btnHelp"
-                                    Width="80px" Height="25px" OnClick="btnOpenDetailsPopup_Click" TabIndex="28"
+                                    Width="80px" Height="25px" OnClick="btnOpenDetailsPopup_Click" TabIndex="12"
                                     Visible="false" />
                             </td>
                         </tr>
@@ -810,15 +813,15 @@ function SelectRow(CurrentRow, RowIndex) {
                     </tr>
                     <tr>
                         <td align="left">Lot No
-                            <asp:TextBox ID="txtlotno_Detail" runat="Server" CssClass="txt" TabIndex="11" Width="90px"
+                            <asp:TextBox ID="txtlotno_Detail" runat="Server" CssClass="txt" TabIndex="13" Width="90px"
                                 Style="text-align: left;" AutoPostBack="false" OnTextChanged="txtlotno_Detail_TextChanged"
                                 Height="24px" onKeyDown="Focusbtn(event);"></asp:TextBox>
                             <asp:Button ID="btntxtlot_no_Detail" runat="server" Text="..." OnClick="btntxtlot_no_Detail_Click"
-                                CssClass="btnHelp" TabIndex="12" />
+                                CssClass="btnHelp" TabIndex="14" />
                             <asp:Label ID="lblyear_Code_Detail" runat="server" CssClass="lblName"></asp:Label>
                             <asp:Label ID="lblCompnycode_Detail" runat="server" CssClass="lblName"></asp:Label>
                             Grade
-                            <asp:TextBox ID="txtgrade_no" runat="Server" CssClass="txt" TabIndex="13" Width="90px"
+                            <asp:TextBox ID="txtgrade_no" runat="Server" CssClass="txt" TabIndex="15" Width="90px"
                                 Style="text-align: left;" AutoPostBack="false" OnTextChanged="txtgrade_no_TextChanged"
                                 Height="24px" onKeyDown="grade_no(event);"></asp:TextBox>
                             <asp:Button ID="btntxtgrade_no" runat="server" Text="..." OnClick="btntxtgrade_no_Click"
@@ -832,16 +835,16 @@ function SelectRow(CurrentRow, RowIndex) {
                                 ValidChars="." TargetControlID="txtamount_Detail">
                             </ajax1:FilteredTextBoxExtender>
                             Adjusted Amount
-                            <asp:TextBox ID="txtAdjusted_Amt" runat="Server" CssClass="txt" TabIndex="15" Width="90px"
+                            <asp:TextBox ID="txtAdjusted_Amt" runat="Server" CssClass="txt" TabIndex="16" Width="90px"
                                 Style="text-align: left;" AutoPostBack="false" OnTextChanged="txtAdjusted_Amt_TextChanged"
                                 Height="24px"></asp:TextBox>
                             <ajax1:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" FilterType="Numbers,Custom"
                                 ValidChars=".-" TargetControlID="txtAdjusted_Amt">
                             </ajax1:FilteredTextBoxExtender>
                             <asp:Button ID="btnAdddetails" runat="server" Text="ADD" CssClass="btnHelp" Width="80px"
-                                Height="25px" OnClick="btnAdddetails_Click" TabIndex="16" />
+                                Height="25px" OnClick="btnAdddetails_Click" TabIndex="17" />
                             <asp:Button ID="btnClosedetails" runat="server" Text="Close" CssClass="btnHelp" Width="80px"
-                                Height="25px" OnClick="btnClosedetails_Click" TabIndex="28" />
+                                Height="25px" OnClick="btnClosedetails_Click" TabIndex="18" />
                         </td>
 
 
