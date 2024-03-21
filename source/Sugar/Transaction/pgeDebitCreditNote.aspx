@@ -1058,6 +1058,17 @@ function SelectRow(CurrentRow, RowIndex) {
                                  Width="120px" Height="24px" OnClientClick="ConfirmCancle();" OnClick="btnCancleEInvoice_Click" />
                     </td>
 
+                      <td align="center">
+                        <asp:Button ID="btnFirst" runat="server" Text="<<" ToolTip="First" CssClass="btnHelp"
+                            Height="24px" OnClick="btnFirst_Click" Width="90px" />
+                        <asp:Button ID="btnPrevious" runat="server" Text="<" ToolTip="First" CssClass="btnHelp"
+                            Height="24px" OnClick="btnPrevious_Click" Width="90px" />
+                        <asp:Button ID="btnNext" runat="server" Text=">" ToolTip="First" CssClass="btnHelp"
+                            Height="24px" OnClick="btnNext_Click" Width="90px" />
+                        <asp:Button ID="btnLast" runat="server" Text=">>" ToolTip="First" CssClass="btnHelp"
+                            Height="24px" OnClick="btnLast_Click" Width="90px" />
+                    </td>
+
                 </tr>
             </table>
             <asp:Panel ID="pnlMain" runat="server" Font-Names="verdana" Font-Bold="true" ForeColor="Black"

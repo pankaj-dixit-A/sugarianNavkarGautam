@@ -310,7 +310,9 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
                 hdnfClosePopup.Value = "txtAC_Code";
                 pnlPopup.Style["display"] = "block";
                 btnSearch_Click(sender, e);
+  
                 txtBankAcNo.Focus();
+                txtBankAcNo.Visible = false;
                
                 
             }
@@ -364,11 +366,11 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     {
         enableddisabled();
         setFocusControl(txtVerifyAcNo);
-        pnlPopup.Style["display"] = "none";
-        txtBankAcNo.Enabled = false;
 
+      
     }
     #endregion
+
 
     #region [txtVerifyAcNo_TextChanged]
     protected void txtVerifyAcNo_TextChanged(object sender, EventArgs e)
@@ -376,7 +378,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
         
         enableddisabled();
         setFocusControl(txtIFSC);
-        txtBankAcNo.Enabled = false;
+     
         pnlPopup.Style["display"] = "none";
     }
     #endregion
@@ -402,22 +404,18 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     {
         enableddisabled();
         setFocusControl(txtBankAcNo2);
-        txtBankAcNo2.Enabled = true;
-        txtBankAcNo2.Focus();
-        
-       
+   
     }
     #endregion
 
     #region [txtBankAcNo2_TextChanged]
     protected void txtBankAcNo2_TextChanged(object sender, EventArgs e)
     {
-        
        
         enableddisabled();
-        txtBankAcNo2.Enabled = true;
-        txtBankAcNo2.Enabled = false;
+      
         setFocusControl(txtVerifyAcNo2);
+       
         
         
     }
@@ -453,11 +451,9 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     {
         enableddisabled();
         setFocusControl(txtBankAcNo3);
-        txtBankAcNo3.Enabled = true;
-        txtBankAcNo2.Focus();
-        
+   
     }
-    #endregion
+    #endregion                                                                                                                                                                                                                                                                                                                                                                                                                       m,                                                                                                                                                                                                
 
 
 
@@ -465,7 +461,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     protected void txtBankAcNo3_TextChanged(object sender, EventArgs e)
     {
         enableddisabled();
-        txtBankAcNo3.Enabled = false;
+    
         setFocusControl(txtVerifyAcNo3);
     }
     #endregion
@@ -956,7 +952,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
 
-        txtBankAcNo.Enabled = true;
+      
         string BankAcNo = string.Empty;
         int flag = 0;
         string IFSC = string.Empty;
@@ -1136,7 +1132,7 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
             txtbeneficiary3.Text = string.Empty;
             txtVerifyAcNo3.Text = string.Empty;
             //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), " ", "alert('Record Successfully Update !')", true);
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SuccessMessage", "alert('Record Successfully Updated!'); window.location.reload();", true);
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SuccessMessage", "alert('Record Successfully Updated!'); window.reload();", true);
         }
     }
 
@@ -1445,8 +1441,8 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
             }
             else
             {
-                             btnUpdate.Visible = false;
-               // btnUpdate.Visible = true;
+                   btnUpdate.Visible = false;
+             //  btnUpdate.Visible = true;
                 btnOtp.Visible = true;
             }
         }
@@ -1460,8 +1456,8 @@ public partial class Sugar_Transaction_pgebankDetail : System.Web.UI.Page
             }
             else
             {
-                          btnUpdate.Visible = false;
-              // btnUpdate.Visible = true;
+                     btnUpdate.Visible = false;
+             // btnUpdate.Visible = true;
                 btnOtp.Visible = true;
             }
         }
