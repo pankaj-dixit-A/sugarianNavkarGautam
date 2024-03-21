@@ -383,7 +383,12 @@
                      document.getElementById("<%=lblBankPaymentAcName.ClientID %>").innerText = grid.rows[SelectedRowIndex + 1].cells[1].innerText;
                      document.getElementById("<%=txtBankPaymentAc.ClientID %>").focus();
                  }
-
+                
+                if (hdnfClosePopupValue == "txtRateDiffAc") {
+                    document.getElementById("<%=txtRateDiffAc.ClientID %>").value = grid.rows[SelectedRowIndex + 1].cells[0].innerText;
+                    document.getElementById("<%=lblratediffacname.ClientID %>").innerText = grid.rows[SelectedRowIndex + 1].cells[1].innerText;
+                    document.getElementById("<%=txtRateDiffAc.ClientID %>").focus();
+                }
 
             }
         }
@@ -1873,7 +1878,7 @@
                             <asp:Label ID="lblDepreciationACname" runat="server" CssClass="lblName"></asp:Label>
                         </td>
                          <td align="right" style="width: 20%;">
-                             Interest Rate:
+                             Interest TDS Rate:
                         </td>
                         <td align="left" style="width: 30%;"> 
                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

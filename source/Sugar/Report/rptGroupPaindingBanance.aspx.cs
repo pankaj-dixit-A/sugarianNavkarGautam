@@ -29,17 +29,35 @@ public partial class Sugar_Report_rptGroupPaindingBanance : System.Web.UI.Page
     int company_code;
     int year_code;
     string Ac_Code = string.Empty;
+    string Mill_Code = string.Empty;
     string mail = string.Empty;
     ReportDocument rprt2 = new ReportDocument();
     ReportDocument rpt = new ReportDocument();
     string company_name = string.Empty;
     string Confim = string.Empty;
+    string isAccounted = string.Empty;
+    string Accounted = string.Empty;
+
+    string Prosess = string.Empty;
+    string isProsess = string.Empty;
+    string calculateStock = string.Empty;
+    string iscalculateStock = string.Empty;
+    string radio = string.Empty;
+    string FromDt = string.Empty;
+    string ToDt = string.Empty;
+    string AccountNumber= string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
-        Ac_Code = Request.QueryString["Ac_Code"]; 
+        Ac_Code = Request.QueryString["Ac_Code"];
+        Mill_Code = Request.QueryString["Mill_Code"];
         company_code = Convert.ToInt32(Session["Company_Code"].ToString());
         year_code = Convert.ToInt32(Session["year"].ToString());
-
+        isAccounted = Request.QueryString["isAccounted"];
+        Prosess = Request.QueryString["Prosess"];
+        calculateStock = Request.QueryString["IsCalculated"];
+        radio = Request.QueryString["radio"];
+        FromDt = Request.QueryString["FromDt"];
+        ToDt = Request.QueryString["ToDt"];
         //DataTable dt = new DataTable();
         company_name = Session["Company_Name"].ToString();
         DataTable dt = GetData();
@@ -57,12 +75,62 @@ public partial class Sugar_Report_rptGroupPaindingBanance : System.Web.UI.Page
     private DataTable GetData()
     {
 
+        if (isAccounted == "A")
+        {
+            Accounted = "";
+        }
+        else {
+            Accounted = "and isAccounted='" + isAccounted + "'";
+        }
+
+        if (Prosess == "A")
+        {
+            isProsess = "";
+        }
+        else {
+            isProsess = "and Prosess='"+ Prosess +"'";
+        }
+
+        if (calculateStock == "A")
+        {
+            iscalculateStock = "";
+        }
+        else
+        {
+            iscalculateStock = "and calculateStock='" + calculateStock + "'";
+        }
+
+        if (radio == "B")
+        {
+            AccountNumber = "and Group_Account=" + Ac_Code;
+        }
+        else if (radio == "A")
+        {
+            AccountNumber = "and membercode=" + Ac_Code;
+        }
+        else
+        {
+            AccountNumber = "";
+        }
+
+        if (Mill_Code == "0")
+        {
+            Mill_Code = "0";
+        }
+        else {
+            Mill_Code = "and Mill_Code=" + Mill_Code;
+        }
+        string datefrom = DateTime.Parse(FromDt, System.Globalization.CultureInfo.CreateSpecificCulture("en-GB")).ToString("yyyy-MM-dd");
+        string dateto = DateTime.Parse(ToDt, System.Globalization.CultureInfo.CreateSpecificCulture("en-GB")).ToString("yyyy-MM-dd");
+
         DataTable dt = new DataTable();
         string strcon = System.Configuration.ConfigurationManager.ConnectionStrings["sqlconnection"].ConnectionString;
         using (SqlConnection con = new SqlConnection(strcon))
         {
-            SqlCommand cmd = new SqlCommand("select * from qryGroupTenderHeadDetail where Group_Account='" + Ac_Code +
-                        "' and isAccounted='N' and Prosess='Y' and Company_Code= '" + company_code + "' and Year_Code= '" + year_code + "'", con);
+            SqlCommand cmd = new SqlCommand("select * from qryGroupTenderHeadDetail where  Company_Code= '" + company_code +
+                        "' and Year_Code= '" + year_code + "' " + AccountNumber +
+                        " " + Accounted + " " + isProsess + " "+ iscalculateStock +
+                              "  and Tender_Date between '" + datefrom + "' and '" + dateto + "'", con);
                 cmd.CommandType = CommandType.Text;
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 sda.Fill(dt);

@@ -406,39 +406,69 @@ public partial class Sugar_Utility_pgeUser_Creation : System.Web.UI.Page
     }
     #endregion
 
-    #region [btnDelete_Click]
+    //#region [btnDelete_Click]
+    //protected void btnDelete_Click(object sender, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        if (hdconfirm.Value == "Yes")
+    //        {
+    //            string currentDoc_No = txtUser_Id.Text;
+    //            int flag = 3;
+
+
+    //            Head_Delete = "delete from " + tblHead + " where User_Id='" + currentDoc_No + "' and Company_Code='" + Convert.ToInt32(Session["Company_Code"].ToString()) + "'";
+    //            Thread thred = new Thread(() => { count = DataStore(flag); }); //Calling DataStore Method Using Threadthred.Start(); //Thread Operation Start
+    //            thred.Start(); //Thread Operation Start
+    //            thred.Join();
+
+
+    //            //if (count == 3)
+    //            //{
+    //            //    Response.Redirect("../Master/pgeGSTRateMaster_Data.aspx");
+    //            //}
+    //        }
+    //        else
+    //        {
+    //            lblMsg.Text = "Cannot delete this Group , it is in use";
+    //            lblMsg.ForeColor = System.Drawing.Color.Red;
+    //        }
+    //    }
+    //    catch
+    //    {
+    //    }
+    //}
+    //#endregion
+
+
     protected void btnDelete_Click(object sender, EventArgs e)
     {
         try
-        {
+        { 
             if (hdconfirm.Value == "Yes")
             {
-                string currentDoc_No = txtUser_Id.Text;
+                string currentDoc_No = txtUser_Id.Text; 
                 int flag = 3;
-
-
-                Head_Delete = "delete from " + tblHead + " where User_Id='" + currentDoc_No + "' and Company_Code='" + Convert.ToInt32(Session["Company_Code"].ToString()) + "'";
-                Thread thred = new Thread(() => { count = DataStore(flag); }); //Calling DataStore Method Using Threadthred.Start(); //Thread Operation Start
+                string query = string.Empty;
+                query = "delete from " + tblHead + " where User_Id='" + currentDoc_No + "' and Company_Code='" + Convert.ToInt32(Session["Company_Code"].ToString()) + "'";
+                Thread thred = new Thread(() => { count = DataStore(query, flag); }); //Calling DataStore Method Using Thread
                 thred.Start(); //Thread Operation Start
                 thred.Join();
+                if (count == 3)
+                {
+                    Response.Redirect("../Utility/pgeUserCreation_Utility.aspx");
+                }
 
 
-                //if (count == 3)
-                //{
-                //    Response.Redirect("../Master/pgeGSTRateMaster_Data.aspx");
-                //}
-            }
-            else
-            {
-                lblMsg.Text = "Cannot delete this Group , it is in use";
-                lblMsg.ForeColor = System.Drawing.Color.Red;
+
             }
         }
         catch
         {
+
         }
+
     }
-    #endregion
 
     #region [btnEdit_Click]
     protected void btnEdit_Click(object sender, EventArgs e)
@@ -719,8 +749,9 @@ public partial class Sugar_Utility_pgeUser_Creation : System.Web.UI.Page
         if (txtEmailPassword.Text != string.Empty)
         {
             isValidated = true;
-            EncryptPass encr = new EncryptPass();
-            hdnfEpass.Value= encr.Encrypt(txtEmailPassword.Text);
+            //EncryptPass encr = new EncryptPass();
+            //hdnfEpass.Value= encr.Encrypt(txtEmailPassword.Text);
+            hdnfEpass.Value = txtEmailPassword.Text;
         }
         else
         {
@@ -748,80 +779,34 @@ public partial class Sugar_Utility_pgeUser_Creation : System.Web.UI.Page
     #endregion
 
     #region DataStore
-    private int DataStore(int flag)
+    private int DataStore(string Query, int flag)
     {
         int count = 0;
         try
         {
             //Connection open
-            if (con.State == ConnectionState.Open)
-            {
-                con.Close();
-            }
+
             con.Open();
             ///Execution
             myTran = con.BeginTransaction();
             //cmd.CommandText = qry;
             //cmd.Connection = con;
             //cmd.Transaction = myTran;
+            cmd = new SqlCommand(Query, con, myTran);
+
+            cmd.ExecuteNonQuery();
+            myTran.Commit();
+            Thread.Sleep(100);
             if (flag == 1)
             {
-                cmd = new SqlCommand(Head_Insert, con, myTran);
-                cmd.ExecuteNonQuery();
-                cmd = new SqlCommand(Detail_Insert, con, myTran);
-                cmd.ExecuteNonQuery();
-                cmd = new SqlCommand(Detail_Insert_Report, con, myTran);
-                cmd.ExecuteNonQuery();
-                myTran.Commit();
-                Thread.Sleep(100);
-
                 count = 1;
             }
             else if (flag == 2)
             {
-                if (Head_Update != "")
-                {
-                    cmd = new SqlCommand(Head_Update, con, myTran);
-                    cmd.ExecuteNonQuery();
-                }
-                if (Detail_Update != "")
-                {
-                    cmd = new SqlCommand(Detail_Update, con, myTran);
-                    cmd.ExecuteNonQuery();
-                }
-                if (Detail_Insert != "")
-                {
-                    cmd = new SqlCommand(Detail_Insert, con, myTran);
-                    cmd.ExecuteNonQuery();
-                }
-                if (Detail_Delete != "")
-                {
-                    cmd = new SqlCommand(Detail_Delete, con, myTran);
-                    cmd.ExecuteNonQuery();
-                }
-
-                if (Detail_Update_Report != "")
-                {
-                    cmd = new SqlCommand(Detail_Update_Report, con, myTran);
-                    cmd.ExecuteNonQuery();
-                }
-                if (Detail_Insert_Report != "")
-                {
-                    cmd = new SqlCommand(Detail_Insert_Report, con, myTran);
-                    cmd.ExecuteNonQuery();
-                }
-                myTran.Commit();
-                Thread.Sleep(100);
                 count = 2;
             }
             else
             {
-                cmd = new SqlCommand(Detail_Delete, con, myTran);
-                cmd.ExecuteNonQuery();
-                cmd = new SqlCommand(Head_Delete, con, myTran);
-                cmd.ExecuteNonQuery();
-                myTran.Commit();
-                Thread.Sleep(100);
                 count = 3;
             }
 
@@ -832,7 +817,7 @@ public partial class Sugar_Utility_pgeUser_Creation : System.Web.UI.Page
             if (myTran != null)
             {
                 myTran.Rollback();
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), " ", "alert('check Entry AND Try Again !')", true);
+
 
             }
             return count;
@@ -845,6 +830,7 @@ public partial class Sugar_Utility_pgeUser_Creation : System.Web.UI.Page
 
     }
     #endregion
+
     #region Generate Next Number
     private void NextNumber()
     {

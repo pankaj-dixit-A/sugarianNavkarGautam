@@ -141,6 +141,51 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
         }
     }
 
+    protected void txtMillCode_TextChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            searchString = txtMillCode.Text;
+            string Mill_Account = string.Empty;
+            if (txtMillCode.Text != string.Empty)
+            {
+                bool a = clsCommon.isStringIsNumeric(txtMillCode.Text);
+                if (a == false)
+                {
+                    btnMillCode_Click(this, new EventArgs());
+                }
+                else
+                {
+                    Mill_Account = clsCommon.getString("select Ac_Name_E from qrymstaccountmaster where Ac_Code='" + txtMillCode.Text + "' and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + "");
+                    if (Mill_Account != string.Empty && Mill_Account != "0")
+                    {
+                        hdnfgid.Value = clsCommon.getString("select accoid  as acid from qryGroupMemberUnion where Ac_Code='" + txtMillCode.Text + "' and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + "");
+
+                        lblMillName.Text = Mill_Account;
+                        setFocusControl(drpFilter);
+
+                    }
+                    else
+                    {
+                        txtMillCode.Text = string.Empty;
+                        lblGroupName.Text = string.Empty;
+                        setFocusControl(txtMillCode);
+                        // AmtCalculation();
+                    }
+                }
+            }
+            else
+            {
+                txtMillCode.Text = string.Empty;
+                lblMillName.Text = Mill_Account;
+            }
+
+        }
+        catch
+        {
+        }
+    }
+
     protected void btnGroupCode_Click(object sender, EventArgs e)
     {
         try
@@ -160,6 +205,20 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
         {
             pnlPopup.Style["display"] = "block";
             hdnfClosePopup.Value = "txtAcCode"; 
+            btnSearch_Click(sender, e);
+        }
+        catch
+        {
+        }
+    }
+
+    protected void btnMillCode_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            
+            pnlPopup.Style["display"] = "block";
+            hdnfClosePopup.Value = "txtMillCode";
             btnSearch_Click(sender, e);
         }
         catch
@@ -283,6 +342,20 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
                     " " + name + " and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + " group by member,name ,acid ";
                 this.showPopup(qry);
             }
+            if (hdnfClosePopup.Value == "txtMillCode")
+            {
+                foreach (var s in split)
+                {
+                    string aa = s.ToString();
+
+                    name += "( Ac_Code like '%" + aa + "%' or Ac_Name_E like '%" + aa + "%' or cityname like '%" + aa + "%') and";
+                }
+                name = name.Remove(name.Length - 3);
+                lblPopupHead.Text = "--Select Commission AC--";
+                string qry = "select Ac_Code,Ac_Name_E,cityname from " +
+                     " qrymstaccountmaster where Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + " and " + name;
+                this.showPopup(qry);
+            }
         }
         catch
         {
@@ -327,17 +400,51 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
 
     protected void btnPaindingReport_Click(object sender, EventArgs e)
     {
-        string Ac_Code = txtGroupCode.Text;
 
-        if (Ac_Code != string.Empty)
+        string Ac_Code = string.Empty;
+        if (radioFilter.SelectedValue == "B")
         {
             Ac_Code = txtGroupCode.Text;
+
+            if (Ac_Code != string.Empty)
+            {
+                Ac_Code = txtGroupCode.Text;
+            }
+            else
+            {
+                setFocusControl(txtGroupCode);
+                return;
+            }
         }
         else
         {
-            Ac_Code = "0";
+            Ac_Code = txtAcCode.Text;
+
+            if (Ac_Code != string.Empty)
+            {
+                Ac_Code = txtAcCode.Text;
+            }
+            else
+            {
+                setFocusControl(txtAcCode);  
+                return;
+            }
+        } 
+        string MIll_Code = txtMillCode.Text;
+
+        if (MIll_Code != string.Empty)
+        {
+            MIll_Code = txtMillCode.Text;
         }
-        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "ku", "javascript:pr('" + Ac_Code + "')", true);
+        else
+        {
+            MIll_Code = "0";
+        }
+
+        string FromDt = DateTime.Parse(txtFromDate.Text, System.Globalization.CultureInfo.CreateSpecificCulture("en-GB")).ToString("yyyy-MM-dd");
+        string ToDt = DateTime.Parse(txtToDate.Text, System.Globalization.CultureInfo.CreateSpecificCulture("en-GB")).ToString("yyyy-MM-dd");
+
+        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "ku", "javascript:pr('" + Ac_Code + "' , '" + drpFilter.SelectedValue + "' , '" + drpIsAccounted.SelectedValue + "' , '" + drpIsCalculated.SelectedValue + "' , '" + radioFilter.SelectedValue + "', '" + FromDt + "', '" + ToDt + "', '" + MIll_Code + "')", true); 
         pnlPopup.Style["display"] = "none";
     }
 
@@ -376,6 +483,7 @@ public partial class Sugar_Report_pgePaindingReport : System.Web.UI.Page
         {
             Ac_Code = "0";
         }
+
         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "ku", "javascript:SG('" + Ac_Code + "')", true);
         pnlPopup.Style["display"] = "none";
     }

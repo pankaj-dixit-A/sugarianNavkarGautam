@@ -475,15 +475,29 @@ public partial class Sugar_Report_pgeIterestcalculate : System.Web.UI.Page
                     InterestAmtCr = interest;
                     InterestAmtDr = 0.00;
                 }
+
+                //rushi add Line
+                if (tdsrate > 0)
+                {
+                    if (InterestAmtDr != 0)
+                    {
+                        tdsamt = (InterestAmtDr * tdsrate) / 100;
+                    }
+                    else
+                    {
+                        tdsamt = (InterestAmtCr * tdsrate) / 100;
+                    }
+
+                }
                 //  interest = interest + (days * (Balance * InterestRate) / 365) / 100;
                 dr[0] = dt.Rows[i]["Ac_Code"];
                 dr[1] = dt.Rows[i]["Ac_Name_E"];
                 dr[2] = Balance;
                 dr[3] = InterestRate;
-                dr[4] = InterestAmtDr;
-                dr[5] = InterestAmtCr;
+                dr[4] = Math.Round(InterestAmtDr,0);
+                dr[5] = Math.Round(InterestAmtCr,0);
                 dr[6] = tdsrate;
-                dr[7] = tdsamt;
+                dr[7] = Math.Round(tdsamt,0);
                 dtreturn.Rows.Add(dr);
 
             }
@@ -515,23 +529,24 @@ public partial class Sugar_Report_pgeIterestcalculate : System.Web.UI.Page
                 double interestamtdr = Convert.ToDouble(grddepreciation.Rows[i].Cells[4].Text);
 
                 double tdsamt = Convert.ToDouble(grddepreciation.Rows[i].Cells[7].Text);
-                //double befoer = Convert.ToDouble(grddepreciation.Rows[i].Cells[3].Text);
+                double IntRate = Convert.ToDouble(grddepreciation.Rows[i].Cells[3].Text);
+                double TDSRate = Convert.ToDouble(grddepreciation.Rows[i].Cells[6].Text);
                 //string narrattion = acname + ",On Amount:" + (op + befoer) + ",(DepRate:" + deprate + "),After Amount:" + after + "(" + deprate / 2 + ")";
                 if (interestamtdr != 0)
                 {
                     if (interestamtdr > 0)
                     {
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",''," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtdr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
                             "," + Session["year"] + ",1,'D','IP',9999," + accoid + "),";
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",''," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtdr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
                           "," + Session["year"] + ",2,'C','IP',9999," + Session["INTEREST_ACid"].ToString() + "),";
 
                     }
                     else
                     {
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",''," + Math.Round(Math.Abs(interestamtcr), 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtcr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(Math.Abs(interestamtcr), 0) + "," + Session["Company_Code"] +
                            "," + Session["year"] + ",1,'C','IP',9999," + accoid + "),";
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",''," + Math.Round(Math.Abs(interestamtcr), 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtcr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(Math.Abs(interestamtcr), 0) + "," + Session["Company_Code"] +
                           "," + Session["year"] + ",2,'D','IP',9999," + Session["INTEREST_ACid"].ToString() + "),";
 
                     }
@@ -540,17 +555,17 @@ public partial class Sugar_Report_pgeIterestcalculate : System.Web.UI.Page
                 {
                     if (interestamtdr > 0)
                     {
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",''," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtdr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
                             "," + Session["year"] + ",1,'D','IP',9999," + accoid + "),";
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",''," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtdr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
                           "," + Session["year"] + ",2,'C','IP',9999," + Session["INTEREST_ACid"].ToString() + "),";
 
                     }
                     else
                     {
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",''," + Math.Round(Math.Abs(interestamtcr), 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtcr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(Math.Abs(interestamtcr), 0) + "," + Session["Company_Code"] +
                            "," + Session["year"] + ",1,'C','IP',9999," + accoid + "),";
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",''," + Math.Round(Math.Abs(interestamtcr), 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtcr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(Math.Abs(interestamtcr), 0) + "," + Session["Company_Code"] +
                           "," + Session["year"] + ",2,'D','IP',9999," + Session["INTEREST_ACid"].ToString() + "),";
 
                     }
@@ -559,17 +574,17 @@ public partial class Sugar_Report_pgeIterestcalculate : System.Web.UI.Page
                 {
                     if (tdsamt > 0)
                     {
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",''," + Math.Round(tdsamt, 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtdr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(tdsamt, 0) + "," + Session["Company_Code"] +
                             "," + Session["year"] + ",3,'C','IP',9999," + accoid + "),";
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",''," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["INTEREST_AC"].ToString() + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtdr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(interestamtdr, 0) + "," + Session["Company_Code"] +
                           "," + Session["year"] + ",4,'D','IP',9999," + Session["INTEREST_ACid"].ToString() + "),";
 
                     }
                     else
                     {
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",''," + Math.Round(Math.Abs(tdsamt), 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + accode + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtcr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(Math.Abs(tdsamt), 0) + "," + Session["Company_Code"] +
                            "," + Session["year"] + ",3,'D','IP',9999," + accoid + "),";
-                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["InterestTDSAc"].ToString() + ",''," + Math.Round(Math.Abs(tdsamt), 0) + "," + Session["Company_Code"] +
+                        insertvalues = insertvalues + "('IP'," + "9999,'" + asondate + "'," + Session["InterestTDSAc"].ToString() + ",'" + acname + ", IntRate:" + IntRate + ", IntAmt:" + interestamtcr + ", TDS:" + TDSRate + ", TdsAmt:" + tdsamt + "'," + Math.Round(Math.Abs(tdsamt), 0) + "," + Session["Company_Code"] +
                           "," + Session["year"] + ",4,'C','IP',9999," + Session["InterestTDSAcid"].ToString() + "),";
 
                     }

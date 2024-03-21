@@ -115,7 +115,7 @@ public partial class Sugar_Master_pgeAccountUtility : System.Web.UI.Page
                    " dbo.nt_1_accountmaster.Commission, dbo.nt_1_accountmaster.Address_E, dbo.nt_1_citymaster.city_name_e, dbo.nt_1_citymaster.GstStateCode, " +
                    " UPPER(dbo.nt_1_accountmaster.Gst_No) AS Gst_No, dbo.nt_1_accountmaster.AC_Pan, dbo.nt_1_accountmaster.FSSAI, dbo.nt_1_accountmaster.adhar_no, " +
                    " dbo.nt_1_accountmaster.Mobile_No, dbo.nt_1_accountmaster.accoid " +
-                   " FROM dbo.nt_1_accountmaster INNER JOIN " +
+                   " FROM dbo.nt_1_accountmaster LEFT OUTER JOIN " +
                    " dbo.nt_1_citymaster ON dbo.nt_1_accountmaster.cityid = dbo.nt_1_citymaster.cityid " +
                    " where dbo.nt_1_accountmaster.Company_Code='" + Company_Code + "' and " + name + "  order by Ac_Code desc ";
         }
