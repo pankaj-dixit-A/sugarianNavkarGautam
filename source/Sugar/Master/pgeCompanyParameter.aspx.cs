@@ -584,9 +584,9 @@ public partial class Sugar_Master_pgeCompanyParameter : System.Web.UI.Page
                 Head_Values = Head_Values + "'" + InterestRate + "',";
                 Head_Fields = Head_Fields + "InterestTDSAc,";
                 Head_Values = Head_Values + "'" + InterestTDSAc + "',";
-                Head_Fields = Head_Fields + "TDSPurchaseBalanceLimit";
+                Head_Fields = Head_Fields + "TDSPurchaseBalanceLimit,";
                 Head_Values = Head_Values + "'" + TDSPurchaseBala + "',";
-                Head_Fields = Head_Fields + "BankPaymentAc";
+                Head_Fields = Head_Fields + "BankPaymentAc,";
                 Head_Values = Head_Values + "'" + BankPaymentAc + "',";
                 Head_Fields = Head_Fields + "bpid";
                 Head_Values = Head_Values + "'" + bpid + "'";
@@ -1894,7 +1894,7 @@ public partial class Sugar_Master_pgeCompanyParameter : System.Web.UI.Page
                     {
                         lblratediffacname.Text = str;
 
-                        setFocusControl(txtRateDiffAc);
+                        setFocusControl(txtDOPages);
                     }
                     else
                     {

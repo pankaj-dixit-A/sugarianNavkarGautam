@@ -4,8 +4,8 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <script type="text/javascript">
-        function pr(Ac_Code) {
-            window.open('rptGroupPaindingBanance.aspx?Ac_Code=' + Ac_Code);     
+        function pr(Ac_Code, Prosess, isAccounted, IsCalculated, radio, FromDt, ToDt, MIll_Code) {
+            window.open('rptGroupPaindingBanance.aspx?Ac_Code=' + Ac_Code + '&Prosess=' + Prosess + '&isAccounted=' + isAccounted + '&IsCalculated=' + IsCalculated + '&radio=' + radio + '&FromDt=' + FromDt + '&ToDt=' + ToDt + '&MIll_Code=' + MIll_Code);
         }
         function GT(Group_Code, FromDt, ToDt, Prosess, Accounted, GroupOrAccount, Ac_no) {
             window.open('rptGroupTenderGroupWice.aspx?Group_Code=' + Group_Code + '&FromDt=' + FromDt + '&ToDt=' + ToDt + '&Prosess=' + Prosess + '&Accounted=' + Accounted + '&GroupOrAccount=' + GroupOrAccount + '&Ac_no=' + Ac_no);
@@ -61,7 +61,12 @@
                 if (hdnfClosePopupValue == "txtAcCode") {
                     document.getElementById("<%= txtAcCode.ClientID %>").value = grid.rows[SelectedRowIndex + 1].cells[0].innerText;
                          document.getElementById("<%= lblAcName.ClientID %>").innerText = grid.rows[SelectedRowIndex + 1].cells[1].innerText;
-                     }
+                }
+
+                if (hdnfClosePopupValue == "txtMillCode") {
+                    document.getElementById("<%= txtMillCode.ClientID %>").value = grid.rows[SelectedRowIndex + 1].cells[0].innerText;
+                    document.getElementById("<%= lblMillName.ClientID %>").innerText = grid.rows[SelectedRowIndex + 1].cells[1].innerText;
+                }
 
                 document.getElementById("<%= hdnfClosePopup.ClientID %>").value = "Close";
             }
@@ -124,7 +129,7 @@ function SelectRow(CurrentRow, RowIndex) {
 
             }
 
-        }
+        } 
         function Accode(e) {
                 debugger;
                 if (e.keyCode == 112) {
@@ -141,6 +146,26 @@ function SelectRow(CurrentRow, RowIndex) {
                 unit = "0" + unit;
                 $("#<%=txtAcCode.ClientID %>").val(unit);
                 __doPostBack("txtAcCode", "TextChanged");
+
+            }
+
+        }
+        function Mcode(e) {
+            debugger;
+            if (e.keyCode == 112) {
+                debugger;
+                e.preventDefault();
+                $("#<%=pnlPopup.ClientID %>").show();
+                    $("#<%=btnMillCode.ClientID %>").click();
+
+                }
+                if (e.keyCode == 9) {
+                    e.preventDefault();
+                    var unit = $("#<%=txtMillCode.ClientID %>").val();
+
+                unit = "0" + unit;
+                $("#<%=txtMillCode.ClientID %>").val(unit);
+                    __doPostBack("txtMillCode", "TextChanged");
 
             }
 
@@ -165,7 +190,10 @@ function SelectRow(CurrentRow, RowIndex) {
                 }
                 if (hdnfClosePopupValue == "txtAcCode") {
                     document.getElementById("<%=txtAcCode.ClientID %>").focus();
-                  }
+                }
+                if (hdnfClosePopupValue == "txtMillCode") {
+                    document.getElementById("<%=txtMillCode.ClientID %>").focus();
+                }
                 document.getElementById("<%=txtSearchText.ClientID %>").value = "";
                 document.getElementById("<%= hdnfClosePopup.ClientID %>").value = "Close";
             }
@@ -202,7 +230,7 @@ function SelectRow(CurrentRow, RowIndex) {
                     <b>Group Code:</b>
                 </td>
              <td align="left" colspan="5" style="width: 60%;">
-                <asp:TextBox ID="txtGroupCode" runat="server" Width="80px" CssClass="txt" AutoPostBack="false"
+                <asp:TextBox ID="txtGroupCode" runat="server" Width="80px" CssClass="txt" AutoPostBack="true"
                     OnTextChanged="txtGroupCode_TextChanged" Height="24px" onkeydown="Groupcode(event);"></asp:TextBox>
                 <asp:Button ID="btnGroupCode" runat="server" Text="..." CssClass="btnHelp" OnClick="btnGroupCode_Click"
                     Height="24px" Width="20px" />
@@ -224,6 +252,20 @@ function SelectRow(CurrentRow, RowIndex) {
                
             </td> 
                 </tr>
+              <tr> 
+              
+                <td align="right" style="width: 40%;">
+                    <b>Mill Code:</b>
+                </td>
+             <td align="left" colspan="5" style="width: 60%;">
+                <asp:TextBox ID="txtMillCode" runat="server" Width="80px" CssClass="txt" AutoPostBack="true"
+                    OnTextChanged="txtMillCode_TextChanged" Height="24px" onkeydown="Mcode(event);"></asp:TextBox>
+                <asp:Button ID="btnMillCode" runat="server" Text="..." CssClass="btnHelp" OnClick="btnMillCode_Click"
+                    Height="24px" Width="20px" />
+                <asp:Label ID="lblMillName" runat="server" CssClass="lblMillName"></asp:Label> 
+               
+            </td> 
+                </tr>
          <tr>
                <td align="right">
                     <b>Prosess:</b>
@@ -231,7 +273,7 @@ function SelectRow(CurrentRow, RowIndex) {
                 <td align="left" >
                 <asp:DropDownList ID="drpFilter" runat="server" CssClass="ddl" Width="280px" Height="25px"
                      AutoPostBack="true">
-                    <asp:ListItem Text="All" Value=""></asp:ListItem>
+                    <asp:ListItem Text="All" Value="A"></asp:ListItem>
                     <asp:ListItem Text="Yes" Value="Y"></asp:ListItem>
                     <asp:ListItem Text="No" Value="N"></asp:ListItem>
                 </asp:DropDownList>
@@ -244,7 +286,20 @@ function SelectRow(CurrentRow, RowIndex) {
                 <td align="left" >
                 <asp:DropDownList ID="drpIsAccounted" runat="server" CssClass="ddl" Width="280px" Height="25px"
                      AutoPostBack="true">
-                    <asp:ListItem Text="All" Value=""></asp:ListItem>
+                    <asp:ListItem Text="All" Value="A"></asp:ListItem>
+                    <asp:ListItem Text="Yes" Value="Y"></asp:ListItem>
+                    <asp:ListItem Text="No" Value="N"></asp:ListItem>
+                </asp:DropDownList>
+            </td>
+            </tr> 
+         <tr>
+               <td align="right">
+                    <b>Is Calculated:</b>
+                </td>
+                <td align="left" >
+                <asp:DropDownList ID="drpIsCalculated" runat="server" CssClass="ddl" Width="280px" Height="25px"
+                     AutoPostBack="true">
+                    <asp:ListItem Text="All" Value="A"></asp:ListItem>
                     <asp:ListItem Text="Yes" Value="Y"></asp:ListItem>
                     <asp:ListItem Text="No" Value="N"></asp:ListItem>
                 </asp:DropDownList>

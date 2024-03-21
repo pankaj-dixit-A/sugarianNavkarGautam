@@ -338,9 +338,9 @@ function SelectRow(CurrentRow, RowIndex) {
                         &nbsp;
                          <asp:Button ID="btnBack" runat="server" Text="Back" CssClass="btnHelp" Width="90px"
                              ValidationGroup="save" Height="24px" OnClientClick="BACK()" />
-                        &nbsp;
+                       <%-- &nbsp;
                          <asp:Button ID="Button1" runat="server" Text="Check" CssClass="btnHelp" Width="90px"
-                             ValidationGroup="save" Height="24px" OnClientClick="validation()" />
+                             ValidationGroup="save" Height="24px" OnClientClick="validation()" />--%>
                     </td>
                 </tr>
             </table>

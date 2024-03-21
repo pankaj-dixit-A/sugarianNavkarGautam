@@ -3497,9 +3497,9 @@ function SelectRow(CurrentRow, RowIndex) {
                     }
                     else if (gridView.rows[i].cells[12].innerHTML == "D") {
                         var doautoid = gridView.rows[i].cells[10].innerHTML;
-                        XML = XML + "<DoDetailInsert doc_no='" + DOC_NO + "' detail_Id='" + doDetail + "' ddType='" + ddtype + "' Bank_Code='" + Bank_Code + "' Narration='" + Narra + "' Amount='" + Amount + "' " +
+                        XML = XML + "<DoDetailDelete doc_no='" + DOC_NO + "' detail_Id='" + doDetail + "' ddType='" + ddtype + "' Bank_Code='" + Bank_Code + "' Narration='" + Narra + "' Amount='" + Amount + "' " +
                       "Company_Code='" + Company_Code + "' Year_Code='" + Year_Code + "' Branch_Code='" + Branch_Code + "' UTR_NO='" + Utr_no + "' " +
-                      "DO_No='" + DOC_NO + "' UtrYearCode='" + UtrYearCode + "' UtrCompanyCode='" + UtrCompanyCode + "' LTNo='" + LT_no + "' bc='" + bc + "' utrdetailid='" + UTRDetail_ID + "' dodetailid='" + ddid + "' doid='" + doid + "'/>";
+                      "DO_No='" + DOC_NO + "' UtrYearCode='" + UtrYearCode + "' UtrCompanyCode='" + UtrCompanyCode + "' LTNo='" + LT_no + "' bc='" + bc + "' utrdetailid='" + UTRDetail_ID + "' dodetailid='" + doautoid + "' doid='" + doid + "'/>";
 
                     }
 
