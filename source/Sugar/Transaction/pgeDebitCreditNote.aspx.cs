@@ -999,6 +999,120 @@ public partial class pgeDebitCreditNote : System.Web.UI.Page
     }
     #endregion
 
+
+
+    #region [enableDisableNavigateButtons]
+    private void enableDisableNavigateButtons()
+    {
+        #region enable disable previous next buttons
+
+        //if (ViewState["mode"].ToString() == "U")
+        //{
+
+        int RecordCount = 0;
+
+        string query = "";
+        query = "select count(*) from " + tblHead + " where Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) +
+        " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and Tran_Type='" + drpSub_Type.SelectedValue + "'";
+        DataSet ds = new DataSet();
+        DataTable dt = new DataTable();
+        ds = clsDAL.SimpleQuery(query);
+        if (ds != null)
+        {
+            if (ds.Tables.Count > 0)
+            {
+                dt = ds.Tables[0];
+                if (dt.Rows.Count > 0)
+                {
+                    RecordCount = Convert.ToInt32(dt.Rows[0][0].ToString());
+                }
+            }
+        }
+
+        if (RecordCount != 0 && RecordCount == 1)
+        {
+            btnFirst.Enabled = true;
+            btnPrevious.Enabled = false;
+            btnNext.Enabled = false;
+            btnLast.Enabled = false;
+        }
+        else if (RecordCount != 0 && RecordCount > 1)
+        {
+            btnFirst.Enabled = true;
+            btnPrevious.Enabled = false;
+            btnNext.Enabled = false;
+            btnLast.Enabled = true;
+            //  btnLast.Focus();
+        }
+
+        if (txtDoc_No.Text != string.Empty)
+        {
+            if (hdnf.Value != string.Empty)
+            {
+                #region check for next or previous record exist or not
+                ds = new DataSet();
+                dt = new DataTable();
+
+                query = "SELECT top 1 [dcid] from " + tblHead +
+                    " where dcid>" + Convert.ToInt32(hdnf.Value) +
+                    " and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString())
+                + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and Tran_Type='" + drpSub_Type.SelectedValue + "' ORDER BY dcid asc  ";
+                ds = clsDAL.SimpleQuery(query);
+                if (ds != null)
+                {
+                    if (ds.Tables.Count > 0)
+                    {
+                        dt = ds.Tables[0];
+                        if (dt.Rows.Count > 0)
+                        {
+                            //next record exist
+                            btnLast.Enabled = true;
+                            btnNext.Enabled = true;
+                        }
+                        else
+                        {
+                            //next record does not exist
+                            btnLast.Enabled = false;
+                            btnNext.Enabled = false;
+                        }
+                    }
+                }
+
+                ds = new DataSet();
+                dt = new DataTable();
+
+                query = "SELECT top 1 [dcid] from " + tblHead + " where dcid<" + Convert.ToInt32(hdnf.Value) +
+                    " and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString())
+                + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and  Tran_Type='" + drpSub_Type.SelectedValue + "' ORDER BY dcid asc  ";
+                ds = clsDAL.SimpleQuery(query);
+                if (ds != null)
+                {
+                    if (ds.Tables.Count > 0)
+                    {
+                        dt = ds.Tables[0];
+                        if (dt.Rows.Count > 0)
+                        {
+                            //previous record exist
+                            btnFirst.Enabled = true;
+                            btnPrevious.Enabled = true;
+                        }
+                        else
+                        {
+                            btnFirst.Enabled = false;
+                            btnPrevious.Enabled = false;
+                        }
+                    }
+                }
+                #endregion
+            }
+        }
+
+        // }
+
+        #endregion
+    }
+    #endregion
+
     #region navigateRecord
     private void navigateRecord()
     {
@@ -1016,7 +1130,7 @@ public partial class pgeDebitCreditNote : System.Web.UI.Page
                     btnEdit.Enabled = true;
                     btnEdit.Focus();
                 }
-
+                this.enableDisableNavigateButtons();
                 this.makeEmptyForm("S");
             }
             else
@@ -1718,6 +1832,86 @@ public partial class pgeDebitCreditNote : System.Web.UI.Page
                 hdnfClosePopup.Value = "txtDoc_No";
                 btnSearch_Click(sender, e);
             }
+        }
+        catch
+        {
+        }
+    }
+    #endregion
+
+
+    #region [First]
+    protected void btnFirst_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            string query = "";
+            query = "select dcid from " + tblHead + " where doc_no=(select MIN(doc_no) from " + tblHead +
+                " where Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) +
+                " and Tran_Type='" + drpSub_Type.SelectedValue + "')  and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) +
+                " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and Tran_Type='" + drpSub_Type.SelectedValue + "'";
+            hdnf.Value = clsCommon.getString(query);
+            navigateRecord();
+        }
+        catch
+        {
+        }
+    }
+    #endregion
+
+    #region [Previous]
+    protected void btnPrevious_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (txtDoc_No.Text != string.Empty)
+            {
+                string query = "SELECT top 1 [dcid] from " + tblHead + " where doc_no<" + Convert.ToInt32(txtDoc_No.Text) +
+                            "   and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) +
+                            " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and Tran_Type='" + drpSub_Type.SelectedValue + "'" +
+                            " ORDER BY doc_no DESC  ";
+                hdnf.Value = clsCommon.getString(query);
+                navigateRecord();
+            }
+        }
+        catch
+        {
+        }
+    }
+    #endregion
+
+    #region [Next]
+    protected void btnNext_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (txtDoc_No.Text != string.Empty)
+            {
+                string query = "SELECT top 1 [dcid] from " + tblHead + " where doc_no>" + Convert.ToInt32(txtDoc_No.Text) +
+                            "   and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and Tran_Type='" + drpSub_Type.SelectedValue + "'" +
+                            " ORDER BY doc_no asc  ";
+                hdnf.Value = clsCommon.getString(query);
+                navigateRecord();
+            }
+        }
+        catch
+        {
+        }
+    }
+    #endregion
+
+    #region [Last]
+    protected void btnLast_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            string query = "";
+            query = "select dcid from " + tblHead + " where doc_no=(select MAX(doc_no) from " + tblHead +
+                " where Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) +
+                " and Tran_Type='" + drpSub_Type.SelectedValue + "')  and Company_Code=" + Convert.ToInt32(Session["Company_Code"].ToString()) +
+                " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and Tran_Type='" + drpSub_Type.SelectedValue + "'";
+            hdnf.Value = clsCommon.getString(query);
+            navigateRecord();
         }
         catch
         {
