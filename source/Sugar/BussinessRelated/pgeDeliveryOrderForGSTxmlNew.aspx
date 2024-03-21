@@ -3366,7 +3366,7 @@ function SelectRow(CurrentRow, RowIndex) {
                 //}
 
                 //end SaleBill Calculation
-
+                debugger;
                 // Memo Calculate
                 if (AUTO_VOUCHER == "YES") {
                     if (parseFloat(MEMO_ADVANCE + VASULI_AMOUNT_1)) {

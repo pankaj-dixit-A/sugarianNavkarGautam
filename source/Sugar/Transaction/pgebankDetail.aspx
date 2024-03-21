@@ -20,7 +20,7 @@
     <script src="../../JS/jquery-2.1.3.js" type="text/javascript"></script>
     <script src="../../Scripts/selectfirstrow.js" type="text/javascript"></script>
 
-     <script type="text/javascript">
+    <script type="text/javascript">
          function noCopyMouse(e) {
              var isRight = (e.button) ? (e.button == 2) : (e.which == 3);
 
@@ -53,6 +53,46 @@
              return true;
          }
     </script>
+
+    <script type="text/javascript" language="javascript">
+        function enableTextFields() {
+            var txtBankAcNo = document.getElementById("<%= txtBankAcNo.ClientID %>");
+        txtBankAcNo.disabled = false;
+
+        var txtBankAcNo2 = document.getElementById("<%= txtBankAcNo2.ClientID %>");
+        txtBankAcNo2.disabled = false;
+
+        var txtBankAcNo3 = document.getElementById("<%= txtBankAcNo3.ClientID %>");
+        txtBankAcNo3.disabled = false;
+    }
+
+    window.onload = function () {
+        var txtBankAcNo = document.getElementById("<%= txtBankAcNo.ClientID %>");
+        txtBankAcNo.addEventListener("keydown", function (event) {
+            if (event.keyCode === 9) {
+                txtBankAcNo.disabled = true;
+            }
+        });
+
+        var txtBankAcNo2 = document.getElementById("<%= txtBankAcNo2.ClientID %>");
+        txtBankAcNo2.addEventListener("keydown", function (event) {
+            if (event.keyCode === 9) {
+                txtBankAcNo2.disabled = true;
+            }
+        });
+
+        var txtBankAcNo3 = document.getElementById("<%= txtBankAcNo3.ClientID %>");
+        txtBankAcNo3.addEventListener("keydown", function (event) {
+            if (event.keyCode === 9) {
+                txtBankAcNo3.disabled = true;
+            }
+        });
+    };
+</script>
+
+
+
+
        <script type="text/javascript" language="javascript">
            debugger;
            document.addEventListener('keyup', function (event) {
@@ -225,7 +265,7 @@ function ac(e) {
                         </td>
                         <td align="left" style="width: 10%;">
                             <asp:TextBox ID="txtBankAcNo" runat="server" Width="200px" Height="24px" CssClass="txt"
-                              AutoPostBack="true"  OnTextChanged="txtBankAcNo_TextChanged" TabIndex="4"></asp:TextBox> 
+                              AutoPostBack="true" OnTextChanged="txtBankAcNo_TextChanged" TabIndex="4"  ></asp:TextBox> 
                         </td>
                     </tr>
                        <tr>
@@ -233,7 +273,7 @@ function ac(e) {
                         </td>
                         <td align="left" style="width: 10%;">
                             <asp:TextBox ID="txtVerifyAcNo" runat="server" Width="200px" Height="24px" CssClass="txt"
-                              AutoPostBack="true"  OnTextChanged="txtVerifyAcNo_TextChanged" TabIndex="5"></asp:TextBox> 
+                              AutoPostBack="true"  OnTextChanged="txtVerifyAcNo_TextChanged" TabIndex="5"  ></asp:TextBox> 
                         </td>
                     </tr>
                     

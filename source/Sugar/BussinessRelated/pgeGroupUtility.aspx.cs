@@ -843,7 +843,7 @@ public partial class Sugar_BussinessRelated_pgeGroupUtility : System.Web.UI.Page
      #region [btnUpdate_Click]
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
-
+      
         #region validation
         bool isvalidate = true;
         if (txtmillcode.Text != string.Empty && txtmillcode.Text != "0")
@@ -985,6 +985,15 @@ public partial class Sugar_BussinessRelated_pgeGroupUtility : System.Web.UI.Page
             dr["Querys"] = Update_Detail;
             Maindt.Rows.Add(dr);
             flag = 1;
+
+            double GroupProfit = Convert.ToDouble(clsCommon.getString("SELECT profit from GroupTenderDetails where ID=1 and  grouptenderid="
+                    + grouptenderid + " and Company_Code=" + Session["Company_Code"].ToString()));
+
+            GroupProfit = GroupProfit + profit;
+            DataSet ds2 = new DataSet();
+            string qry2 = "update GroupTenderDetails set profit=" + GroupProfit + " where ID=1 and company_code=" + Convert.ToInt32(Session["Company_Code"].ToString())
+                           + " and Year_Code=" + Convert.ToInt32(Session["year"].ToString()) + " and Tender_No=" + txttender.Text + "";
+            ds2 = clsDAL.SimpleQuery(qry2);
         }
         else
         {

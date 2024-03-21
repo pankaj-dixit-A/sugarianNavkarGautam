@@ -112,6 +112,8 @@ public partial class pgeUtrentryxml : System.Web.UI.Page
     {
         try
         {
+
+           
             cs = ConfigurationManager.ConnectionStrings["sqlconnection"].ConnectionString;
             conn = new SqlConnection(cs);
             tblPrefix = Session["tblPrefix"].ToString();
@@ -697,7 +699,7 @@ public partial class pgeUtrentryxml : System.Web.UI.Page
     protected void btnAdd_Click(object sender, EventArgs e)
     {
         clsButtonNavigation.enableDisable("A");
-
+        hdnfPayment_Type.Value = drpPaymentType.SelectedValue;
         ViewState["mode"] = null;
         ViewState["mode"] = "I";
         this.makeEmptyForm("A");
@@ -705,12 +707,14 @@ public partial class pgeUtrentryxml : System.Web.UI.Page
         setFocusControl(txtdoc_date);
         txtlotno_Detail.Enabled = false;
         drpEntryType.SelectedValue = "FB";
+       
     }
     #endregion
 
     #region [btnEdit_Click]
     protected void btnEdit_Click(object sender, EventArgs e)
     {
+        hdnfPayment_Type.Value = drpPaymentType.SelectedValue;
         ViewState["mode"] = null;
         ViewState["mode"] = "U";
         clsButtonNavigation.enableDisable("E");
@@ -718,6 +722,10 @@ public partial class pgeUtrentryxml : System.Web.UI.Page
         this.makeEmptyForm("E");
         txtdoc_no.Enabled = false;
         setFocusControl(txtdoc_date);
+
+        txtbank_ac.Enabled = false;
+        btntxtbank_ac.Enabled = false;
+
     }
     #endregion
 
@@ -2798,10 +2806,12 @@ public partial class pgeUtrentryxml : System.Web.UI.Page
     }
     #endregion
 
+
     #region [drpPaymentType_SelectedIndexChanged]
     protected void drpPaymentType_SelectedIndexChanged(object sender, EventArgs e)
     {
-        setFocusControl(txtmill_code);
+     
+     setFocusControl(drpPaymentType);
     }
       #endregion
 
